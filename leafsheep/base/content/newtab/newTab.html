@@ -1,0 +1,1293 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leafsheep Desktop</title>
+    <link rel="icon" href="chrome://browser/content/newtab/ls.png">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval' data: blob: filesystem: about:; child-src * blob: data: filesystem: about:; frame-src * blob: data: filesystem: about:; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline'; img-src * data: blob: filesystem:; connect-src * ws: wss:;">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            overflow: hidden;
+            font-family: 'Noto Sans', sans-serif;
+            transition: background 1s ease-in-out;
+        }
+        
+        /* 白天背景 - #4fd1d9深色渐变 */
+        body.daytime {
+            background: linear-gradient(135deg, #1a5a60, #0a3a40) !important;
+        }
+        
+        /* 日出日落背景 - #f6ad55深色渐变 */
+        body.sunrise-sunset {
+            background: linear-gradient(135deg, #a85c25, #783c15) !important;
+        }
+        
+        /* 黑夜背景 - #a78bfa深色渐变 */
+        body.nighttime {
+            background: linear-gradient(135deg, #4a3f9f, #2a2f6f) !important;
+        }
+        
+        /* 桌面容器 */
+        .desktop {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 50px);
+        }
+        
+        /* 任务栏 */
+        .taskbar {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background: rgba(40, 44, 52, 0.9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        /* 任务栏应用图标 */
+        .app-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .app-icon:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+        
+        /* 应用窗口基础样式 */
+        .window {
+            position: absolute;
+            width: 41.9%;
+            height: 43%;
+            min-width: 400px;
+            min-height: 300px;
+            background: rgba(35, 39, 46, 0.95);
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            resize: both;
+        }
+        
+        /* 窗口标题栏 */
+        .window-header {
+            height: 40px;
+            background: linear-gradient(to right, #3a3f4b, #2e3440);
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+            cursor: move;
+            user-select: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .window-icon {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: auto;
+        }
+        
+        /* 窗口控制按钮 */
+        .window-controls {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        
+        .window-btn {
+            width: 16px;
+            height: 16px;
+            border-radius: 40%;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .window-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .window-btn.close {
+            background: #ff5f56;
+        }
+        
+        .window-btn.maximize {
+            background: #ffbd2e;
+        }
+    
+        
+        /* 窗口内容区域 */
+        .window-content {
+            flex-grow: 1;
+            padding: 10px;
+            color: #d8dee9;
+            overflow: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="desktop" id="desktop">
+        <!-- 应用窗口将在这里动态添加 -->
+    </div>
+    
+    <div class="taskbar">
+        <div class="app-icon" id="terminal-icon" title="Terminal">
+            <!-- 终端图标使用CSS绘制 -->
+            <div style="width: 20px; height: 16px; border: 2px solid #4fd1d9; border-radius: 3px; position: relative;">
+                <div style="position: absolute; width: 8px; height: 2px; background: #4fd1d9; top: 4px; left: 4px;"></div>
+                <div style="position: absolute; width: 2px; height: 4px; background: #4fd1d9; top: 8px; left: 4px;"></div>
+                <div style="position: absolute; width: 8px; height: 2px; background: #4fd1d9; top: 12px; left: 4px;"></div>
+            </div>
+        </div>
+        <div class="app-icon" id="browser-icon" title="Preview">
+            <!-- 浏览器图标使用CSS绘制 -->
+            <div style="width: 18px; height: 18px; border: 2px solid #f6ad55; border-radius: 4px; position: relative;">
+                <div style="position: absolute; width: 10px; height: 6px; border: 1px solid #f6ad55; top: 2px; left: 2px;"></div>
+                <div style="position: absolute; width: 2px; height: 2px; background: #f6ad55; top: 5px; left: 5px;"></div>
+            </div>
+        </div>
+        <div class="app-icon" id="search-icon" title="Search">
+            <!-- 搜索图标使用CSS绘制 -->
+            <div style="width: 18px; height: 18px; position: relative;">
+                <div style="width: 12px; height: 12px; border: 2px solid #a78bfa; border-radius: 50%; position: absolute; top: 0; left: 0;"></div>
+                <div style="width: 6px; height: 2px; background: #a78bfa; transform: rotate(45deg); position: absolute; bottom: 2px; right: 0;"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 窗口管理功能
+        class WindowManager {
+            constructor() {
+                this.windows = [];
+                this.activeWindow = null;
+                this.zIndex = 100;
+                
+                // 初始化事件监听
+                document.getElementById('terminal-icon').addEventListener('click', () => this.createTerminalWindow());
+                document.getElementById('browser-icon').addEventListener('click', () => this.createBrowserWindow());
+                document.getElementById('search-icon').addEventListener('click', () => this.createSearchWindow());
+                
+                // 初始化时间检测和背景切换
+                this.initTimeBasedBackground();
+            }
+            
+            // 时间检测和背景切换功能
+            initTimeBasedBackground() {
+                // 立即设置初始背景
+                this.updateBackgroundBasedOnTime();
+                
+                // 每分钟检查一次时间并更新背景
+                setInterval(() => {
+                    this.updateBackgroundBasedOnTime();
+                }, 60000); // 每分钟检查一次
+            }
+            
+            updateBackgroundBasedOnTime() {
+                const now = new Date();
+                const currentHour = now.getHours();
+                
+                // 移除所有时间相关的背景类
+                document.body.classList.remove('daytime', 'sunrise-sunset', 'nighttime');
+                
+                // 根据时间设置背景
+                if (currentHour >= 8 && currentHour < 15) {
+                    // 白天：8点-15点，蓝色系渐变
+                    document.body.classList.add('daytime');
+                    console.log('background_daytime');
+                } else if ((currentHour >= 6 && currentHour < 8) || (currentHour >= 16 && currentHour < 18)) {
+                    // 日出日落：6点-8点和16点-18点，橙黄色渐变
+                    document.body.classList.add('sunrise-sunset');
+                } else {
+                    // 黑夜：其余时间，黑紫色渐变
+                    document.body.classList.add('nighttime');
+                }
+                
+                console.log(`Time: ${now.toLocaleString()}, Hour: ${currentHour}`);
+            }
+            
+            createWindow(title, content) {
+                const windowElement = document.createElement('div');
+                windowElement.className = 'window';
+                windowElement.style.zIndex = this.zIndex++;
+                
+                // 设置窗口居中位置 - 使用固定的窗口尺寸
+                const windowWidth = 400; // 使用CSS中定义的min-width
+                const windowHeight = 300; // 使用CSS中定义的min-height
+                windowElement.style.left = `calc(50% - ${windowWidth / 2}px)`;
+                windowElement.style.top = `calc(50% - ${windowHeight / 2}px)`;
+                
+                windowElement.innerHTML = `
+                    <div class="window-header">
+                        <div class="window-icon">
+                            ${title === 'Terminal' ? `
+                                <div style="width: 16px; height: 12px; border: 2px solid #4fd1d9; border-radius: 2px; position: relative;">
+                                    <div style="position: absolute; width: 6px; height: 2px; background: #4fd1d9; top: 3px; left: 3px;"></div>
+                                    <div style="position: absolute; width: 2px; height: 3px; background: #4fd1d9; top: 6px; left: 3px;"></div>
+                                    <div style="position: absolute; width: 6px; height: 2px; background: #4fd1d9; top: 9px; left: 3px;"></div>
+                                </div>
+                            ` : title === 'Search' ? `
+                                <div style="width: 14px; height: 14px; position: relative;">
+                                    <div style="width: 10px; height: 10px; border: 2px solid #a78bfa; border-radius: 50%; position: absolute; top: 0; left: 0;"></div>
+                                    <div style="width: 5px; height: 2px; background: #a78bfa; transform: rotate(45deg); position: absolute; bottom: 1px; right: 0;"></div>
+                                </div>
+                            ` : `
+                                <div style="width: 14px; height: 14px; border: 2px solid #f6ad55; border-radius: 3px; position: relative;">
+                                    <div style="position: absolute; width: 8px; height: 4px; border: 1px solid #f6ad55; top: 2px; left: 2px;"></div>
+                                    <div style="position: absolute; width: 2px; height: 2px; background: #f6ad55; top: 5px; left: 5px;"></div>
+                                </div>
+                            `}
+                        </div>
+                        <div class="window-controls">
+                            <div class="window-btn maximize"></div>
+                            <div class="window-btn close"></div>
+                        </div>
+                    </div>
+                    <div class="window-content">${content}</div>
+                `;
+                
+                document.getElementById('desktop').appendChild(windowElement);
+                this.windows.push(windowElement);
+                this.activeWindow = windowElement;
+                
+                // 添加窗口控制功能
+                this.setupWindowControls(windowElement);
+                
+                return windowElement;
+            }
+            
+            setupWindowControls(windowElement) {
+                const header = windowElement.querySelector('.window-header');
+                const closeBtn = windowElement.querySelector('.window-btn.close');
+                const maximizeBtn = windowElement.querySelector('.window-btn.maximize');
+                
+                // 窗口拖动功能
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                header.addEventListener('mousedown', (e) => {
+                    if (e.target === header || e.target === windowElement.querySelector('.window-title')) {
+                        isDragging = true;
+                        offsetX = e.clientX - windowElement.getBoundingClientRect().left;
+                        offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+                        windowElement.style.zIndex = this.zIndex++;
+                        this.activeWindow = windowElement;
+                    }
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    let x = e.clientX - offsetX;
+                    let y = e.clientY - offsetY;
+                    
+                    // 限制窗口不超出视口
+                    const maxX = window.innerWidth - windowElement.offsetWidth;
+                    const maxY = window.innerHeight - windowElement.offsetHeight;
+                    
+                    x = Math.max(0, Math.min(x, maxX));
+                    y = Math.max(0, Math.min(y, maxY));
+                    
+                    windowElement.style.left = `${x}px`;
+                    windowElement.style.top = `${y}px`;
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                // 窗口控制按钮功能
+                closeBtn.addEventListener('click', () => {
+                    windowElement.remove();
+                    this.windows = this.windows.filter(w => w !== windowElement);
+                });
+                
+                maximizeBtn.addEventListener('click', () => {
+                    if (windowElement.style.width === '100%') {
+                        // 恢复窗口
+                        windowElement.style.width = '41.9%';
+                        windowElement.style.height = '43%';
+                        windowElement.style.left = 'calc(35% - 160px)';
+                        windowElement.style.top = 'calc(35% - 80px)';
+                        windowElement.style.resize = 'both';
+                    } else {
+                        // 最大化窗口
+                    
+                        windowElement.style.width = '100%';
+                        windowElement.style.height = 'calc(100vh - 50px)';
+                        windowElement.style.left = '0';
+                        windowElement.style.top = '0';
+                        windowElement.style.resize = 'none';
+                    }
+                });
+                
+                // 点击窗口时置顶
+                windowElement.addEventListener('mousedown', () => {
+                    windowElement.style.zIndex = this.zIndex++;
+                    this.activeWindow = windowElement;
+                });
+            }
+            createTerminalWindow() {
+                const terminalContent = `
+                    <div style="font-family: 'Courier New', monospace; color: #d8dee9; background: #1a1e2466; height: 100%; padding: 10px; overflow: auto;">
+                        <div id="terminal-output">
+                            Welcome to Leafsheep Terminal v1.0<br>
+                            Type 'help' for available commands.<br><br>
+                        </div>
+                        <div style="display: flex; align-items: center;">
+                            <span style="color: #4fd1d9;">user@leafsheep:~$ </span>
+                            <input type="text" id="terminal-input" 
+                                   style="background: transparent; border: none; color: #d8dee9; 
+                                          font-family: 'Courier New', monospace; font-size: 14px; 
+                                          outline: none; margin-left: 5px; width: calc(100% - 150px);"
+                                   autofocus>
+                        </div>
+                    </div>
+                `;
+                
+                const windowElement = this.createWindow('Terminal', terminalContent);
+                
+                // 添加终端功能
+                const terminalInput = windowElement.querySelector('#terminal-input');
+                const terminalOutput = windowElement.querySelector('#terminal-output');
+                
+                terminalInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const command = terminalInput.value.trim();
+                        terminalInput.value = '';
+                        
+                        // 显示输入的命令
+                        terminalOutput.innerHTML += `<span style="color: #4fd1d9;">user@leafsheep:~$ </span>${command}<br>`;
+                        
+                        // 处理命令 - 使用正确的 this 绑定
+                        this.processTerminalCommand(command, terminalOutput, windowElement);
+                        
+                        // 滚动到底部
+                        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+                    }
+                });
+                
+                return windowElement;
+            }
+            
+            processTerminalCommand(command, outputElement, windowElement) {
+                const commands = {
+                    'uname': () => {
+                        outputElement.innerHTML += `Leafsheep Browser - ${navigator.userAgent}<br>`;
+                    },
+                    'time': () => {
+                        const now = new Date();
+                        const currentHour = now.getHours();
+                        let timePeriod = '';
+                        
+                        if (currentHour >= 8 && currentHour < 15) {
+                            timePeriod = 'day';
+                        } else if ((currentHour >= 6 && currentHour < 8) || (currentHour >= 16 && currentHour < 18)) {
+                            timePeriod = 'night';
+                        } else {
+                            timePeriod = 'moon';
+                        }
+                        
+                        outputElement.innerHTML += `${now.toLocaleString()} - ${timePeriod}<br>`;
+                    },
+                    'echo': () => {
+                        // 获取echo命令后的参数
+                        const args = command.substring(5).trim();
+                        if (args) {
+                            outputElement.innerHTML += `${args}<br>`;
+                        } else {
+                            outputElement.innerHTML += '<br>'; // 空行
+                        }
+                    },
+                    'preview': () => {
+                        this.createBrowserWindow();
+                        outputElement.innerHTML += 'Opening Preview application...<br>';
+                    },
+                    'search': () => {
+                        this.createSearchWindow();
+                        outputElement.innerHTML += 'Opening Search application...<br>';
+                    },
+                    'terminal': () => {
+                        this.createTerminalWindow();
+                        outputElement.innerHTML += 'Opening new Terminal window...<br>';
+                    },
+                    'clear': () => {
+                        outputElement.innerHTML = '';
+                    },
+                    'reboot': () => {
+                        outputElement.innerHTML += 'Refreshing page...<br>';
+                        setTimeout(() => location.reload(), 1000);
+                    },
+                    'help': () => {
+                        outputElement.innerHTML += `
+Available commands:<br>
+- uname: Display browser user agent<br>
+- time: Show current date and time<br>
+- echo [text]: Display text message<br>
+- preview: Open Preview application<br>
+- search: Open Search application<br>
+- terminal: Open new Terminal window<br>
+- clear: Clear terminal output<br>
+- reboot: Refresh the page<br>
+- help: Show this help message<br><br>
+                        `;
+                    }
+                };
+                
+                if (commands[command]) {
+                    commands[command]();
+                } else if (command.startsWith('echo ')) {
+                    commands['echo']();
+                } else if (command.startsWith('search ')) {
+                    // search
+                    outputElement.innerHTML += 'Opening Search application...<br>';
+                    this.createSearchWindow();
+                } else if (command) {
+                    outputElement.innerHTML += `Command not found: ${command}<br>Type 'help' for available commands.<br>`;
+                }
+            }
+            createBrowserWindow() {
+                const windowElement = this.createWindow('Preview', `
+                    <div id="preview-container" style="height: 100%; display: flex; align-items: center; justify-content: center; background: #1a1e24;">
+                        <div id="search-section" style="width: 100%; text-align: center;">
+                            <div style="display: inline-block; position: relative;">
+                                <input type="text" id="preview-search" 
+                                       placeholder="Enter URL to preview..." 
+                                       style="width: 400px; height: 50px; padding: 0 20px; border: none; 
+                                              border-radius: 25px; background: rgba(255, 255, 255, 0.1); 
+                                              color: #d8dee9; font-size: 16px; outline: none;
+                                              backdrop-filter: blur(10px);">
+                            </div>
+                        </div>
+                        <div id="iframe-section" style="display: none; width: 100%; height: 100%;">
+                            <iframe id="preview-iframe" style="width: 100%; height: 100%; border: none;"></iframe>
+                        </div>
+                    </div>
+                `);
+                
+                // 添加预览功能
+                const searchInput = windowElement.querySelector('#preview-search');
+                const searchSection = windowElement.querySelector('#search-section');
+                const iframeSection = windowElement.querySelector('#iframe-section');
+                const iframe = windowElement.querySelector('#preview-iframe');
+                
+                // 添加搜索框回车事件
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        const url = searchInput.value.trim();
+                        if (url) {
+                            this.loadPreviewUrl(url, searchSection, iframeSection, iframe, windowElement);
+                        }
+                    }
+                });
+                
+                // 添加后退按钮到窗口控制栏
+                this.addBackButtonToPreview(windowElement, searchSection, iframeSection, searchInput);
+                
+                return windowElement;
+            }
+            
+            loadPreviewUrl(url, searchSection, iframeSection, iframe, windowElement) {
+                // 确保URL有协议前缀
+                let fullUrl = url;
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    fullUrl = 'https://' + url;
+                }
+                
+                // 隐藏搜索框，显示iframe
+                searchSection.style.display = 'none';
+                iframeSection.style.display = 'block';
+                
+                // 显示后退按钮
+                if (windowElement.backButton) {
+                    windowElement.backButton.style.display = 'block';
+                }
+                
+                // 首先尝试直接加载，如果失败则使用代理
+                this.loadContentViaProxy(fullUrl, iframe, fullUrl);
+            }
+            
+            loadContentViaProxy(url, iframe, originalUrl) {
+                // 首先尝试直接加载
+                const tryDirectLoad = () => {
+                    return new Promise((resolve, reject) => {
+                        iframe.src = url;
+                        
+                        // 设置超时检查
+                        const timeout = setTimeout(() => {
+                            // 如果iframe成功加载了内容，则resolve
+                            try {
+                                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                                if (doc && doc.body && doc.body.innerHTML) {
+                                    resolve('direct');
+                                } else {
+                                    reject(new Error('Direct load timeout'));
+                                }
+                            } catch (error) {
+                                // 跨域错误，说明直接加载被阻止
+                                reject(new Error('CSP blocked direct load'));
+                            }
+                        }, 3000);
+                        
+                        // 监听iframe加载事件
+                        iframe.onload = () => {
+                            clearTimeout(timeout);
+                            resolve('direct');
+                        };
+                        
+                        iframe.onerror = () => {
+                            clearTimeout(timeout);
+                            reject(new Error('Direct load failed'));
+                        };
+                    });
+                };
+                
+                // 尝试代理服务
+                const tryProxies = () => {
+                    const proxyServices = [
+                        'https://api.allorigins.win/get?url=',
+                        'https://corsproxy.io/?',
+                        'https://cors-anywhere.herokuapp.com/'
+                    ];
+                    
+                    let currentProxyIndex = 0;
+                    
+                    const tryNextProxy = () => {
+                        if (currentProxyIndex >= proxyServices.length) {
+                            // 所有代理都失败了，显示错误信息
+                            this.showProxyError(iframe, originalUrl);
+                            return;
+                        }
+                        
+                        const currentProxyUrl = proxyServices[currentProxyIndex] + encodeURIComponent(originalUrl);
+                        currentProxyIndex++;
+                        
+                        fetch(currentProxyUrl)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Proxy response not ok');
+                                return response.text();
+                            })
+                            .then(data => {
+                                // 解析代理返回的JSON数据
+                                let content;
+                                try {
+                                    const jsonData = JSON.parse(data);
+                                    content = jsonData.contents || data;
+                                } catch {
+                                    content = data;
+                                }
+                                
+                                // 创建包含原始内容的HTML文档
+                                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                                doc.open();
+                                doc.write(content);
+                                doc.close();
+                            })
+                            .catch(error => {
+                                console.warn(`Proxy ${currentProxyIndex - 1} failed, trying next:`, error);
+                                tryNextProxy();
+                            });
+                    };
+                    
+                    tryNextProxy();
+                };
+                
+                // 先尝试直接加载，失败则使用代理
+                tryDirectLoad()
+                    .then(result => {
+                        console.log('Direct load successful:', result);
+                    })
+                    .catch(error => {
+                        console.log('Direct load failed, trying proxies:', error.message);
+                        tryProxies();
+                    });
+            }
+            
+            showProxyError(iframe, originalUrl) {
+                const errorHtml = `
+                    <html>
+                    <head>
+                        <style>
+                            body { 
+                                font-family: Arial, sans-serif; 
+                                background: #1a1e24; 
+                                color: #d8dee9; 
+                                padding: 20px; 
+                                text-align: center;
+                            }
+                            .error-container {
+                                max-width: 600px;
+                                margin: 50px auto;
+                                padding: 30px;
+                                background: rgba(255, 255, 255, 0.1);
+                                border-radius: 10px;
+                                backdrop-filter: blur(10px);
+                            }
+                            .error-title {
+                                color: #ff5f56;
+                                font-size: 24px;
+                                margin-bottom: 20px;
+                            }
+                            .error-message {
+                                font-size: 16px;
+                                line-height: 1.6;
+                                margin-bottom: 20px;
+                            }
+                            .original-url {
+                                background: rgba(0, 0, 0, 0.3);
+                                padding: 10px;
+                                border-radius: 5px;
+                                font-family: monospace;
+                                word-break: break-all;
+                                margin: 20px 0;
+                            }
+                            .retry-button {
+                                background: #4CAF50;
+                                color: white;
+                                border: none;
+                                padding: 10px 20px;
+                                border-radius: 5px;
+                                cursor: pointer;
+                                font-size: 16px;
+                                margin: 10px;
+                            }
+                            .retry-button:hover {
+                                background: #45a049;
+                            }
+                            .direct-link {
+                                color: #4fd1d9;
+                                text-decoration: none;
+                                margin: 10px;
+                                display: inline-block;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="error-container">
+                            <div class="error-title">Content Loading Blocked</div>
+                            <div class="error-message">
+                                The page could not be loaded due to Content Security Policy restrictions.<br>
+                                This is a common issue when trying to embed external websites.
+                            </div>
+                            <div class="original-url">
+                                Original URL: ${originalUrl}
+                            </div>
+                            <button class="retry-button" onclick="window.parent.windowManager.loadContentViaProxy('', window.parent.document.querySelector('iframe').contentWindow.frameElement, '${originalUrl}')">
+                                Try Alternative Method
+                            </button>
+                            <br>
+                            <a href="${originalUrl}" target="_blank" class="direct-link">
+                                Open in New Tab →
+                            </a>
+                        </div>
+                    </body>
+                    </html>
+                `;
+                
+                const doc = iframe.contentDocument || iframe.contentWindow.document;
+                doc.open();
+                doc.write(errorHtml);
+                doc.close();
+            }
+            
+
+            
+            showSearchSection(searchSection, iframeSection, windowElement) {
+                // 显示搜索框，隐藏iframe
+                searchSection.style.display = 'block';
+                iframeSection.style.display = 'none';
+                
+                // 移除后退按钮
+                this.removeBackButton(windowElement);
+            }
+            
+            addBackButtonToPreview(windowElement, searchSection, iframeSection, searchInput) {
+                // 创建后退按钮
+                const backBtn = document.createElement('div');
+                backBtn.className = 'window-btn back';
+                backBtn.style.cssText = `
+                    width: 16px; height: 16px; border-radius: 40%; cursor: pointer;
+                    margin: 0 10px; transition: transform 0.2s ease; background: #4CAF50;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+                `;
+                backBtn.style.display = 'none'; // 初始隐藏
+                
+                // 添加到窗口控制栏
+                const controls = windowElement.querySelector('.window-controls');
+                controls.insertBefore(backBtn, controls.querySelector('.window-btn.maximize'));
+                
+                // 添加点击事件
+                backBtn.addEventListener('click', () => {
+                    this.showSearchSection(searchSection, iframeSection, windowElement);
+                });
+                
+                // 存储后退按钮引用
+                windowElement.backButton = backBtn;
+            }
+            
+            removeBackButton(windowElement) {
+                if (windowElement.backButton) {
+                    windowElement.backButton.style.display = 'none';
+                }
+            }
+            
+            // 修改窗口控制按钮设置函数，支持后退按钮显示
+            setupWindowControls(windowElement) {
+                const header = windowElement.querySelector('.window-header');
+                const closeBtn = windowElement.querySelector('.window-btn.close');
+                const maximizeBtn = windowElement.querySelector('.window-btn.maximize');
+                
+                // 窗口拖动功能
+                let isDragging = false;
+                let offsetX, offsetY;
+                
+                header.addEventListener('mousedown', (e) => {
+                    if (e.target === header || e.target === windowElement.querySelector('.window-title')) {
+                        isDragging = true;
+                        offsetX = e.clientX - windowElement.getBoundingClientRect().left;
+                        offsetY = e.clientY - windowElement.getBoundingClientRect().top;
+                        windowElement.style.zIndex = this.zIndex++;
+                        this.activeWindow = windowElement;
+                    }
+                });
+                
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    let x = e.clientX - offsetX;
+                    let y = e.clientY - offsetY;
+                    
+                    // 限制窗口不超出视口
+                    const maxX = window.innerWidth - windowElement.offsetWidth;
+                    const maxY = window.innerHeight - windowElement.offsetHeight;
+                    
+                    x = Math.max(0, Math.min(x, maxX));
+                    y = Math.max(0, Math.min(y, maxY));
+                    
+                    windowElement.style.left = `${x}px`;
+                    windowElement.style.top = `${y}px`;
+                });
+                
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                });
+                
+                // 窗口控制按钮功能
+                closeBtn.addEventListener('click', () => {
+                    windowElement.remove();
+                    this.windows = this.windows.filter(w => w !== windowElement);
+                });
+                
+                maximizeBtn.addEventListener('click', () => {
+                    if (windowElement.style.width === '100%') {
+                        // 恢复窗口
+                        windowElement.style.width = '41.9%';
+                        windowElement.style.height = '43%';
+                        windowElement.style.left = 'calc(35% - 160px)';
+                        windowElement.style.top = 'calc(35% - 80px)';
+                        windowElement.style.resize = 'both';
+                    } else {
+                        // 最大化窗口
+                    
+                        windowElement.style.width = '100%';
+                        windowElement.style.height = 'calc(100vh - 50px)';
+                        windowElement.style.left = '0';
+                        windowElement.style.top = '0';
+                        windowElement.style.resize = 'none';
+                    }
+                });
+                
+                // 点击窗口时置顶
+                windowElement.addEventListener('mousedown', () => {
+                    windowElement.style.zIndex = this.zIndex++;
+                    this.activeWindow = windowElement;
+                });
+            }
+            
+            createSearchWindow(isMaximized = false) {
+                const searchContent = `
+                    <div style="height: 100%; display: flex; align-items: center; justify-content: center; background: #1a1e24;">
+                        <div style="width: 80%; max-width: 800px; text-align: center;">
+                            <!-- Search应用LOGO -->
+                            <div style="margin-bottom: 30px;">
+                                <div style="width: 80px; height: 80px; margin: 0 auto; display: flex; align-items: center; justify-content: center; background: rgba(167, 139, 250, 0.2); border-radius: 20px; border: 2px solid #a78bfa;">
+                                    <svg width="50" height="50" viewBox="0 0 24 24" fill="#a78bfa">
+                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                    </svg>
+                                </div>
+                            </div>
+                            
+                            <!-- 按钮栏 - 放在搜索框上方 -->
+                            <div style="display: flex; justify-content: center; align-items: center; gap: 15px; margin-bottom: 20px;">
+                                <!-- 搜索引擎选择按钮 -->
+                                <button id="engine-selector-btn" 
+                                        style="background: rgba(255, 255, 255, 0.1); border: none; 
+                                               width: 50px; height: 50px; border-radius: 25px; 
+                                               cursor: pointer; display: flex; align-items: center; 
+                                               justify-content: center; color: #d8dee9; font-size: 20px;
+                                               transition: all 0.3s ease; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </button>
+                                
+                                <!-- View搜索按钮 -->
+                                <button id="view-search-btn" 
+                                        class="search-btn view-search-btn" 
+                                        style="background: #a78bfa; color: white; border: none; 
+                                               width: 50px; height: 50px; border-radius: 25px; 
+                                               cursor: pointer; display: flex; align-items: center; 
+                                               justify-content: center; opacity: 1; transition: all 0.3s ease;
+                                               box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
+                                    </svg>
+                                </button>
+                                
+                                <!-- 普通搜索按钮 -->
+                                <button id="normal-search-btn" 
+                                        class="search-btn normal-search-btn" 
+                                        style="background: #4fd1d9; color: white; border: none; 
+                                               width: 50px; height: 50px; border-radius: 25px; 
+                                               cursor: pointer; display: flex; align-items: center; 
+                                               justify-content: center; transition: all 0.3s ease;
+                                               box-shadow: 0 4px 12px rgba(79, 209, 217, 0.3);">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                                        <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- 搜索框容器 -->
+                            <div style="position: relative; display: inline-block; width: 100%;">
+                                <!-- 居中圆角矩形搜索框 -->
+                                <textarea id="search-input" 
+                                          placeholder="Hello~" 
+                                          style="width: 100%; min-height: 60px; padding: 20px; 
+                                                 border: 2px solid rgba(255, 255, 255, 0.2); 
+                                                 border-radius: 30px; background: rgba(255, 255, 255, 0.1); 
+                                                 color: #d8dee9; font-size: 16px; outline: none;
+                                                 resize: vertical; backdrop-filter: blur(10px);
+                                                 font-family: 'Noto Sans', sans-serif;
+                                                 transition: all 0.3s ease;"></textarea>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+                `;
+                
+                const windowElement = this.createWindow('Search', searchContent);
+                
+                // 如果指定了最大化，则最大化窗口
+                if (isMaximized) {
+                    windowElement.style.width = '100%';
+                    windowElement.style.height = 'calc(100vh - 50px)';
+                    windowElement.style.left = '0';
+                    windowElement.style.top = '0';
+                    windowElement.style.resize = 'none';
+                }
+                
+                // 添加Search应用功能
+                this.setupSearchFunctionality(windowElement);
+                
+                return windowElement;
+            }
+            
+            setupSearchFunctionality(windowElement) {
+                
+                // 获取DOM元素
+                const searchInput = windowElement.querySelector('#search-input');
+                const enginePills = windowElement.querySelectorAll('.engine-pill');
+                const viewSearchBtn = windowElement.querySelector('#view-search-btn');
+                const normalSearchBtn = windowElement.querySelector('#normal-search-btn');
+                const engineSelectorBtn = windowElement.querySelector('#engine-selector-btn');
+                
+                let currentEngine = 'yep';
+                let currentEngineType = 'view';
+                
+                // 添加CSS样式
+                const style = document.createElement('style');
+                style.textContent = `
+                    .engine-pill {
+                        display: inline-block;
+                        padding: 8px 16px;
+                        margin: 4px;
+                        background: rgba(255, 255, 255, 0.1);
+                        color: #d8dee9;
+                        border-radius: 20px;
+                        cursor: pointer;
+                        font-size: 14px;
+                        transition: all 0.3s ease;
+                        border: 1px solid transparent;
+                    }
+                    
+                    .engine-pill:hover {
+                        background: rgba(255, 255, 255, 0.2);
+                        transform: translateY(-2px);
+                    }
+                    
+                    .engine-pill.active {
+                        background: rgba(167, 139, 250, 0.3);
+                        border-color: #a78bfa;
+                        color: #a78bfa;
+                    }
+                    
+                    .engine-pill[data-type="normal"].active {
+                        background: rgba(79, 209, 217, 0.3);
+                        border-color: #4fd1d9;
+                        color: #4fd1d9;
+                    }
+                    
+                    .engine-pill[data-type="specific"].active {
+                        background: rgba(246, 173, 85, 0.3);
+                        border-color: #f6ad55;
+                        color: #f6ad55;
+                    }
+                    
+                    .pill-group {
+                        display: flex;
+                        flex-wrap: wrap;
+                        gap: 5px;
+                        max-width: 300px;
+                    }
+                    
+                    .engine-category {
+                        display: inline-block;
+                        vertical-align: top;
+                    }
+                    
+                    .search-btn {
+                        transition: all 0.3s ease;
+                    }
+                    
+                    .search-btn:hover {
+                        transform: scale(1.1);
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+                    }
+                    
+                    .search-btn:disabled {
+                        opacity: 0.3;
+                        cursor: not-allowed;
+                        transform: none;
+                    }
+                    
+                    #search-input:focus {
+                        border-color: rgba(167, 139, 250, 0.5);
+                        background: rgba(255, 255, 255, 0.15);
+                    }
+                `;
+                windowElement.querySelector('.window-content').appendChild(style);
+                
+                // 引擎选择按钮点击事件 - 改为弹出小弹窗
+                engineSelectorBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    
+                    // 创建搜索引擎选择弹窗
+                    this.createEngineSelectionPopup(engineSelectorBtn, (selectedEngine, selectedType) => {
+                        // 更新当前搜索引擎
+                        currentEngine = selectedEngine;
+                        currentEngineType = selectedType;
+                        
+                        // 更新View搜索按钮状态
+                        this.updateViewSearchButton(viewSearchBtn, currentEngineType);
+                        
+                        // 更新所有药丸的激活状态
+                        enginePills.forEach(pill => {
+                            pill.classList.remove('active');
+                            if (pill.dataset.engine === selectedEngine) {
+                                pill.classList.add('active');
+                            }
+                        });
+                    });
+                });
+                
+                // 搜索引擎药丸点击事件
+                enginePills.forEach(pill => {
+                    pill.addEventListener('click', () => {
+                        // 移除所有激活状态
+                        enginePills.forEach(p => p.classList.remove('active'));
+                        
+                        // 设置当前激活状态
+                        pill.classList.add('active');
+                        
+                        // 更新当前搜索引擎
+                        currentEngine = pill.dataset.engine;
+                        currentEngineType = pill.dataset.type;
+                        
+                        // 更新View搜索按钮状态
+                        this.updateViewSearchButton(viewSearchBtn, currentEngineType);
+                    });
+                });
+                
+                // View搜索按钮点击事件
+                viewSearchBtn.addEventListener('click', () => {
+                    const searchText = searchInput.value.trim();
+                    if (searchText) {
+                        this.performViewSearch(searchText, currentEngine);
+                    }
+                });
+                
+                // 普通搜索按钮点击事件
+                normalSearchBtn.addEventListener('click', () => {
+                    const searchText = searchInput.value.trim();
+                    if (searchText) {
+                        this.performNormalSearch(searchText, currentEngine);
+                    }
+                });
+                
+                // 搜索框回车事件
+                searchInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        const searchText = searchInput.value.trim();
+                        if (searchText) {
+                            if (currentEngineType === 'view') {
+                                this.performViewSearch(searchText, currentEngine);
+                            } else {
+                                this.performNormalSearch(searchText, currentEngine);
+                            }
+                        }
+                    }
+                });
+                
+                // 初始更新View搜索按钮状态
+                this.updateViewSearchButton(viewSearchBtn, currentEngineType);
+            }
+            
+            updateViewSearchButton(viewSearchBtn, engineType) {
+                if (engineType === 'view') {
+                    viewSearchBtn.style.opacity = '1';
+                    viewSearchBtn.disabled = false;
+                } else {
+                    viewSearchBtn.style.opacity = '0.3';
+                    viewSearchBtn.disabled = true;
+                }
+            }
+            
+            createEngineSelectionPopup(anchorElement, callback) {
+                // 创建弹窗容器
+                const popup = document.createElement('div');
+                popup.style.cssText = `
+                    position: absolute;
+                    top: ${anchorElement.offsetTop + anchorElement.offsetHeight + 10}px;
+                    left: ${anchorElement.offsetLeft}px;
+                    background: rgba(30, 30, 46, 0.95);
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border-radius: 15px;
+                    padding: 15px;
+                    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+                    backdrop-filter: blur(10px);
+                    z-index: 1000;
+                    min-width: 200px;
+                    max-width: 300px;
+                    max-height: 400px;
+                    overflow-y: auto;
+                `;
+                
+                // 搜索引擎配置
+                const searchEngines = {
+                    'yep': { name: 'Yep', type: 'view', url: 'https://yep.com/web?q=' },
+                    'bing': { name: 'Bing', type: 'normal', url: 'https://www.bing.com/search?q=' },
+                    'duckduckgo': { name: 'DuckDuckGo', type: 'normal', url: 'https://duckduckgo.com/?q=' },
+                    'google': { name: 'Google', type: 'normal', url: 'https://www.google.com/search?q=' },
+                    'baidu': { name: 'Baidu', type: 'normal', url: 'https://www.baidu.com/s?wd=' },
+                    'sogou': { name: 'sogou', type: 'normal', url: 'https://www.sogou.com/web?query=' },
+                    '360': { name: '360', type: 'normal', url: 'https://www.so.com/s?q=' },
+                    'quark': { name: 'quark', type: 'normal', url: 'https://quark.sm.cn/s?q=' },
+                    'brave': { name: 'Brave', type: 'normal', url: 'https://search.brave.com/search?q=' },
+                    'yahoo': { name: 'Yahoo', type: 'normal', url: 'https://search.yahoo.com/search?p=' },
+                    'yandex': { name: 'Yandex', type: 'normal', url: 'https://yandex.com/search/?text=' },
+                    'ecosia': { name: 'Ecosia', type: 'normal', url: 'https://www.ecosia.org/search?q=' },
+                    'startpage': { name: 'Startpage', type: 'normal', url: 'https://www.startpage.com/do/search?q=' },
+                    'qwant': { name: 'Qwant', type: 'normal', url: 'https://www.qwant.com/?q=' },
+                    'github': { name: 'GitHub', type: 'specific', url: 'https://github.com/search?q=' },
+                    'wikipedia': { name: 'Wikipedia', type: 'specific', url: 'https://en.wikipedia.org/wiki/Special:Search?search=' }
+                };
+                
+                // 按类型分组
+                const groupedEngines = {
+                    'view': [],
+                    'normal': [],
+                    'specific': []
+                };
+                
+                Object.entries(searchEngines).forEach(([key, engine]) => {
+                    groupedEngines[engine.type].push({ key, ...engine });
+                });
+                
+                // 创建弹窗内容
+                let popupContent = '<div style="color: #d8dee9; font-family: \'Noto Sans\', sans-serif;">';
+                
+                // VIEW搜索引擎
+                if (groupedEngines.view.length > 0) {
+                    popupContent += '<div style="margin-bottom: 15px;">';
+                    popupContent += '<div style="color: #a78bfa; font-size: 12px; margin-bottom: 8px; font-weight: bold;">VIEW Search</div>';
+                    groupedEngines.view.forEach(engine => {
+                        popupContent += `<div class="engine-option" data-engine="${engine.key}" data-type="${engine.type}" 
+                                         style="padding: 8px 12px; margin: 2px 0; border-radius: 8px; cursor: pointer; 
+                                                transition: all 0.2s ease; color: #d8dee9;"
+                                         onmouseover="this.style.background='rgba(167, 139, 250, 0.2)'"
+                                         onmouseout="this.style.background='transparent'">
+                                         ${engine.name}
+                                        </div>`;
+                    });
+                    popupContent += '</div>';
+                }
+                
+                // 普通搜索引擎
+                if (groupedEngines.normal.length > 0) {
+                    popupContent += '<div style="margin-bottom: 15px;">';
+                    popupContent += '<div style="color: #4fd1d9; font-size: 12px; margin-bottom: 8px; font-weight: bold;">Search</div>';
+                    groupedEngines.normal.forEach(engine => {
+                        popupContent += `<div class="engine-option" data-engine="${engine.key}" data-type="${engine.type}" 
+                                         style="padding: 8px 12px; margin: 2px 0; border-radius: 8px; cursor: pointer; 
+                                                transition: all 0.2s ease; color: #d8dee9;"
+                                         onmouseover="this.style.background='rgba(79, 209, 217, 0.2)'"
+                                         onmouseout="this.style.background='transparent'">
+                                         ${engine.name}
+                                        </div>`;
+                    });
+                    popupContent += '</div>';
+                }
+                
+                // 特定搜索引擎
+                if (groupedEngines.specific.length > 0) {
+                    popupContent += '<div style="margin-bottom: 15px;">';
+                    popupContent += '<div style="color: #f6ad55; font-size: 12px; margin-bottom: 8px; font-weight: bold;">Special Search</div>';
+                    groupedEngines.specific.forEach(engine => {
+                        popupContent += `<div class="engine-option" data-engine="${engine.key}" data-type="${engine.type}" 
+                                         style="padding: 8px 12px; margin: 2px 0; border-radius: 8px; cursor: pointer; 
+                                                transition: all 0.2s ease; color: #d8dee9;"
+                                         onmouseover="this.style.background='rgba(246, 173, 85, 0.2)'"
+                                         onmouseout="this.style.background='transparent'">
+                                         ${engine.name}
+                                        </div>`;
+                    });
+                    popupContent += '</div>';
+                }
+                
+                popupContent += '</div>';
+                popup.innerHTML = popupContent;
+                
+                // 添加点击事件
+                popup.querySelectorAll('.engine-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        const engine = option.dataset.engine;
+                        const type = option.dataset.type;
+                        callback(engine, type);
+                        document.body.removeChild(popup);
+                    });
+                });
+                
+                // 点击外部关闭弹窗
+                const closePopup = (e) => {
+                    if (!popup.contains(e.target) && e.target !== anchorElement) {
+                        document.body.removeChild(popup);
+                        document.removeEventListener('click', closePopup);
+                    }
+                };
+                
+                // 添加到页面
+                document.body.appendChild(popup);
+                
+                // 添加点击外部关闭事件
+                setTimeout(() => {
+                    document.addEventListener('click', closePopup);
+                }, 0);
+                
+                // 确保弹窗在可视区域内
+                const rect = popup.getBoundingClientRect();
+                if (rect.bottom > window.innerHeight) {
+                    popup.style.top = `${anchorElement.offsetTop - popup.offsetHeight - 10}px`;
+                }
+                if (rect.right > window.innerWidth) {
+                    popup.style.left = `${window.innerWidth - popup.offsetWidth - 20}px`;
+                }
+            }
+            
+            performViewSearch(searchText, engine) {
+                const searchUrl = this.getSearchUrl(searchText, engine);
+                
+                // 创建Preview应用窗口并加载搜索URL
+                const previewWindow = this.createBrowserWindow();
+                
+                // 等待Preview窗口加载完成后设置URL
+                setTimeout(() => {
+                    const searchInput = previewWindow.querySelector('#preview-search');
+                    if (searchInput) {
+                        searchInput.value = searchUrl;
+                        // 触发搜索
+                        const event = new KeyboardEvent('keypress', { key: 'Enter' });
+                        searchInput.dispatchEvent(event);
+                    }
+                }, 500);
+            }
+            
+            performNormalSearch(searchText, engine) {
+                const searchUrl = this.getSearchUrl(searchText, engine);
+                // 在新标签页中打开搜索
+                window.open(searchUrl, '_blank');
+            }
+            
+            getSearchUrl(searchText, engine) {
+                // 搜索引擎映射
+                const searchEngines = {
+                    'yep': { url: 'https://yep.com/web?q=', type: 'view' },
+                    'bing': { url: 'https://www.bing.com/search?q=', type: 'normal' },
+                    'duckduckgo': { url: 'https://duckduckgo.com/?q=', type: 'normal' },
+                    'startpage': { url: 'https://www.startpage.com/do/search?q=', type: 'normal' },
+                    'google': { url: 'https://www.google.com/search?q=', type: 'normal' },
+                    'yandex': { url: 'https://yandex.com/search/?text=', type: 'normal' },
+                    'Startpagina': { url: 'https://www.startpagina.nl/search?q=', type: 'normal' },
+                    'mojeek': { url: 'https://www.mojeek.com/search?q=', type: 'normal' },
+                    'ecosia': { url: 'https://www.ecosia.org/search?q=', type: 'normal' },
+                    'ekoru': { url: 'https://www.ekoru.org/?q=', type: 'normal' },
+                    'yahoo': { url: 'https://search.yahoo.com/search?p=', type: 'normal' },
+                    'sogou': { url: 'https://www.sogou.com/web?query=', type: 'normal' },
+                    '360': { url: 'https://www.so.com/s?q=', type: 'normal' },
+                    'baidu': { url: 'https://www.baidu.com/s?wd=', type: 'normal' },
+                    'quark': { url: 'https://quark.sm.cn/s?q=', type: 'normal' },
+                    'github': { url: 'https://github.com/search?q=', type: 'specific' },
+                    'wikipedia': { url: 'https://en.wikipedia.org/wiki/Special:Search?search=', type: 'specific' }
+                };
+                
+                const engineConfig = searchEngines[engine];
+                if (engineConfig) {
+                    return engineConfig.url + encodeURIComponent(searchText);
+                }
+                // 默认使用Yep搜索
+                return 'https://yep.com/web?q=' + encodeURIComponent(searchText);
+            }
+        }
+        
+        // 初始化窗口管理器并创建默认搜索窗口（最大化）
+        window.windowManager = new WindowManager();
+        windowManager.createSearchWindow(true);
+        
+    </script>
+</body>
+</html>
