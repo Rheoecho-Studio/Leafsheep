@@ -1,0 +1,29 @@
+#Leafsheep
+ac_add_options --enable-application=leafsheep
+ac_add_options --enable-private-build
+ac_add_options --prefix=/usr
+ac_add_options --enable-strip
+ac_add_options --enable-install-strip
+ac_add_options --enable-gold
+ac_add_options --enable-pie
+ac_add_options --enable-jemalloc
+ac_add_options --with-pthreads
+ac_add_options --enable-optimize="-O2 -msse -msse2 -msse3 -mmmx -mfpmath=sse"
+ac_add_options --enable-default-toolkit=cairo-gtk3
+ac_add_options --enable-alsa
+ac_add_options --enable-devtools
+ac_add_options --enable-webrtc
+ac_add_options --enable-av1
+ac_add_options --enable-gamepad
+ac_add_options --disable-crashreporter
+ac_add_options --disable-debug
+ac_add_options --disable-debug-symbols
+ac_add_options --disable-tests
+ac_add_options --disable-dbus
+ac_add_options --disable-gconf
+ac_add_options --disable-gio
+ac_add_options --disable-necko-wifi
+ac_add_options --disable-startup-notification
+ac_add_options --disable-updater
+ac_add_options --disable-maintenance-service
+ac_add_options --enable-sync
