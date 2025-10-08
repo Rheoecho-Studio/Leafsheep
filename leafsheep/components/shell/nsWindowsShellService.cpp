@@ -1,4 +1,4 @@
-/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
+﻿/* -*- Mode: C++; tab-width: 2; indent-tabs-mode: nil; c-basic-offset: 2 -*- */
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -726,12 +726,13 @@ SettingsAppBelievesConnected()
 nsresult
 nsWindowsShellService::LaunchModernSettingsDialogDefaultApps()
 {
-  if (!IsWindowsBuildOrLater(14965) &&
-      !IsWindowsLogonConnected() && SettingsAppBelievesConnected()) {
-    // Use the classic Control Panel to work around a bug of older
-    // builds of Windows 10.
-    return LaunchControlPanelDefaultPrograms();
-  }
+    // 关键修改：给14965加显式转换，适配MSVC的类型要求
+    if (!IsWindowsBuildOrLater(static_cast<mozilla::WinBuild>(14965)) &&
+        !IsWindowsLogonConnected() && SettingsAppBelievesConnected()) {
+        // Use the classic Control Panel to work around a bug of older
+        // builds of Windows 10.
+        return LaunchControlPanelDefaultPrograms();
+    }
 
   IApplicationActivationManager* pActivator;
   HRESULT hr = CoCreateInstance(CLSID_ApplicationActivationManager,

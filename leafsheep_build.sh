@@ -55,13 +55,13 @@ if [ "$SYNC_UXP" = "y" ] || [ "$SYNC_UXP" = "Y" ]; then
         echo "Using default option: $DEFAULT_UXP_CHANNEL ($DEFAULT_UXP_NAME)"
     fi
     
-    # 确保UXP文件夹存在
-    mkdir -p UXP
-    cd UXP
+    # 确保platform文件夹存在（直接下载到platform文件夹）
+    mkdir -p platform
+    cd platform
     
     case $UXP_CHANNEL in
         1|RB|rb) 
-            echo "Downloading"
+            echo "Downloading UXP release build..."
             # 获取最新的release tar.gz文件链接
             # 使用更精确的方式提取tarball_url
             LATEST_RELEASE=$(curl -s https://repo.palemoon.org/api/v1/repos/MoonchildProductions/UXP/releases/latest)
@@ -71,7 +71,7 @@ if [ "$SYNC_UXP" = "y" ] || [ "$SYNC_UXP" = "Y" ]; then
             rm uxp-latest.tar.gz
             ;;
         2|RC|rc) 
-            echo "Downloading"
+            echo "Downloading UXP release candidate..."
             # 获取最新的tag tar.gz文件链接
             # 注意：这里需要根据实际情况修改获取最新tag的方式
             # 示例使用curl和jq来获取最新tag，需要安装这些工具
@@ -91,14 +91,6 @@ if [ "$SYNC_UXP" = "y" ] || [ "$SYNC_UXP" = "Y" ]; then
     esac
     
     cd ..
-    
-    
-    # 移动UXP文件夹内容到platform
-    echo "Moving UXP content to platform folder..."
-    mv UXP/* platform/
-    
-    # 删除空的UXP文件夹
-    rmdir UXP
     echo "UXP sync completed!"
 echo
 fi
@@ -171,10 +163,14 @@ case $ACTION in
         echo "Cleaning build environment..."
         ./mach clobber
         ;;
+    5|package) 
+        echo "Packageing..."
+        ./mach package
+        ;;
     *) 
         echo "Invalid option, no action performed."
         ;;
 esac
 
 echo
-echo "Thank you for building LeafSheep web browser!"
+echo "Welcome to LeafSheep!"
