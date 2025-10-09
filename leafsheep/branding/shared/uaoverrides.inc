@@ -24,8 +24,10 @@ pref("@GUAO_PREF@.addons.mozilla.org","Mozilla/5.0 (%OS_SLICE% rv:@UXP_VERSION@)
 pref("@GUAO_PREF@.aol.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
 pref("@GUAO_PREF@.bing.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
 pref("@GUAO_PREF@.canva.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Pale Moon)");
-pref("@GUAO_PREF@.chase.com","Mozilla/5.0 (%OS_SLICE% rv:102.0) @GK_SLICE@ Firefox/102.0");
+pref("@GUAO_PREF@.chase.com","Mozilla/5.0 (%OS_SLICE% rv:140.0) @GK_SLICE@ Firefox/140.0");
 pref("@GUAO_PREF@.dropbox.com","Mozilla/5.0 (%OS_SLICE% rv:68.9) @GK_SLICE@ Firefox/68.9 (Leafsheep)");
+pref("@GUAO_PREF@.bilibili.com","Mozilla/5.0 (%OS_SLICE% rv:140.0) @GK_SLICE@ Firefox/140.0 (Leafsheep)");
+pref("@GUAO_PREF@.youtube.com","Mozilla/5.0 (%OS_SLICE%) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 (Leafsheep)");
 pref("@GUAO_PREF@.kroger.com","Mozilla/5.0 (%OS_SLICE% rv:86.0) @GK_SLICE@ Firefox/86.0 (Leafsheep)");
 pref("@GUAO_PREF@.live.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
 pref("@GUAO_PREF@.msn.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
@@ -40,7 +42,7 @@ pref("@GUAO_PREF@.calendar.yahoo.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) 
 pref("@GUAO_PREF@.soundcloud.com","Mozilla/5.0 (%OS_SLICE% rv:@UXP_VERSION@) @UXP_DATE_SLICE@ @APP_SLICE@");
 pref("@GUAO_PREF@.players.brightcove.net","Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko");
 // Google fonts serves physically different fonts to later Firefox versions that render incorrectly unless on Gecko
-pref("@GUAO_PREF@.fonts.googleapis.com", "Mozilla/5.0 (%OS_SLICE% rv:61.9) Gecko/20100101 Firefox/61.9");
+pref("@GUAO_PREF@.fonts.googleapis.com", "Mozilla/5.0 (%OS_SLICE% rv:140.0) Gecko/20100101 Firefox/140.0");
 pref("@GUAO_PREF@.fonts-api.wp.com", "Mozilla/5.0 (%OS_SLICE% rv:61.9) Gecko/20100101 Firefox/61.9");
 
 // The following requires native mode. Or it blocks.. "too old firefox", breakage, etc.
