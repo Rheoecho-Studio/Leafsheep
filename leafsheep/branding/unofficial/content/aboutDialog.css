@@ -13,24 +13,24 @@
   background-image: url("chrome://branding/content/about-background.png");
   background-repeat: no-repeat;
   background-color: rgb(10,17,37);
-  color: #00201c;
+  color: #000000;
   font-family: 'UniFont', sans-serif;
 }
 
 .text-link {
-  color: #000f52 !important;
+  color: #00434d !important;
   text-decoration: underline;
   font-family: 'UniFont', sans-serif;
 }
 
 #rightBox {
   /* this margin prevents text from overlapping the planet image */
-  margin-left: 280px;
+  margin-left: 20px;
   margin-right: 20px;
   font-family: 'UniFont', sans-serif;
 }
 
 #bottomBox {
-  background-color: rgba(0,0,0,.7);
+  background-color: rgba(255, 255, 255, 0.7);
   font-family: 'UniFont', sans-serif;
 }

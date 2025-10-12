@@ -15,7 +15,7 @@ fi
 mk_add_options AUTOCLOBBER=1
 
 # Application and target
-ac_add_options --enable-application=
+ac_add_options --enable-application=leafsheep
 
 # Build options
 # Adjust the -j parameter if you need more or fewer parallel build tasks
