@@ -758,6 +758,7 @@
               let topLevel = aWebProgress.isTopLevel;
 
               if (topLevel) {
+                let isUrlFocused = gURLBar && gURLBar.focused;
                 let isSameDocument =
                   !!(aFlags & Ci.nsIWebProgressListener.LOCATION_CHANGE_SAME_DOCUMENT);
                 // We need to clear the typed value
@@ -1377,7 +1378,8 @@
         <parameter name="aTab"/>
         <body>
           <![CDATA[
-            aTab.label = this.mStringBundle.getString("tabs.connecting");
+            let title = this.mStringBundle.getString("tabs.connecting");
+	          aTab.label = this._formatContainerTabTitle(aTab, title);
             if (Services.prefs.getBoolPref("browser.tabs.fadeLabels")) {
               aTab.crop = "clip";
             } else {
@@ -1388,6 +1390,38 @@
         </body>
       </method>
 
+ 	
+	      <method name="_formatContainerTabTitle">
+	        <parameter name="aTab"/>
+	        <parameter name="aTitle"/>
+	        <body>
+	          <![CDATA[
+	            let userContextId = parseInt(aTab.getAttribute("usercontextid"), 10) || 0;
+	            if (!userContextId) {
+	              return aTitle;
+	            }
+	
+	            let win = this.ownerDocument.defaultView;
+	            let identityService = win && win.ContextualIdentityService;
+	            if (!identityService) {
+	              return aTitle;
+	            }
+	
+	            let identity = identityService.getIdentityFromId(userContextId);
+	            if (!identity) {
+	              return aTitle;
+	            }
+	
+	            try {
+	              return this.mStringBundle.getFormattedString("tabs.containerTitleFormat",
+	                                                          [identity.name, aTitle]);
+	            } catch (ex) {
+	              return "(" + identity.name + ") " + aTitle;
+	            }
+	          ]]>
+	        </body>
+	      </method>
+	
       <method name="setTabTitle">
         <parameter name="aTab"/>
         <body>
@@ -1431,6 +1465,8 @@
               crop = "clip";
             }
 
+            title = this._formatContainerTabTitle(aTab, title);
+
             if (aTab.label == title &&
                 aTab.crop == crop)
               return false;
@@ -1467,6 +1503,7 @@
             var aRelatedBrowser;
             var aOriginPrincipal;
             var aOpener;
+            var aUserContextId;
             if (arguments.length == 2 &&
                 typeof arguments[1] == "object" &&
                 !(arguments[1] instanceof Ci.nsIURI)) {
@@ -1487,6 +1524,7 @@
               aRelatedBrowser       = params.relatedBrowser;
               aOriginPrincipal      = params.originPrincipal;
               aOpener               = params.opener;
+              aUserContextId        = params.userContextId;
             }
 
             var bgLoad = (aLoadInBackground != null) ? aLoadInBackground :
@@ -1508,7 +1546,8 @@
                                   noReferrer: aNoReferrer,
                                   originPrincipal: aOriginPrincipal,
                                   relatedBrowser: aRelatedBrowser,
-                                  opener: aOpener });
+                                  opener: aOpener,
+                                  userContextId: aUserContextId});
             if (!bgLoad)
               this.selectedTab = tab;
 
@@ -1526,6 +1565,7 @@
           let aTargetTab;
           let aNewIndex = -1;
           let aPostDatas = [];
+          let aUserContextId;
           if (arguments.length == 2 &&
               typeof arguments[1] == "object") {
             let params = arguments[1];
@@ -1536,10 +1576,16 @@
             aNewIndex             = typeof params.newIndex === "number" ?
                                     params.newIndex : aNewIndex;
             aPostDatas            = params.postDatas || aPostDatas;
+            aUserContextId        = params.userContextId;
           }
 
           if (!aURIs.length)
             return;
+
+ 	        if (aUserContextId === undefined) {
+	          aUserContextId = parseInt(this.selectedBrowser.getAttribute("usercontextid"), 10) || 0;
+	        }
+	
 
           // The tab selected after this new tab is closed (i.e. the new tab's
           // "owner") is the next adjacent tab (i.e. not the previously viewed tab)
@@ -1584,7 +1630,8 @@
               ownerTab: owner,
               skipAnimation: multiple,
               allowThirdPartyFixup: aAllowThirdPartyFixup,
-              postData: aPostDatas[0]
+ 	            postData: aPostDatas[0],
+	            userContextId: aUserContextId
             });
             if (aNewIndex !== -1) {
               this.moveTabTo(firstTabAdded, aNewIndex);
@@ -1597,7 +1644,8 @@
             let tab = this.addTab(aURIs[i], {
               skipAnimation: true,
               allowThirdPartyFixup: aAllowThirdPartyFixup,
-              postData: aPostDatas[i]
+              postData: aPostDatas[i],
+	            userContextId: aUserContextId
             });
             if (targetTabIndex !== -1)
               this.moveTabTo(tab, ++tabNum);
@@ -1859,6 +1907,10 @@
               b.setAttribute("remote", "true");
             }
 
+            if (aParams.userContextId) {
+	            b.setAttribute("usercontextid", aParams.userContextId);
+	          }
+
             if (aParams.opener) {
               if (aParams.remote) {
                 throw new Exception("Cannot set opener window on a remote browser!");
@@ -1936,6 +1988,7 @@
             // forceNotRemote
 
             let uriIsAboutBlank = !aURI || aURI == "about:blank";
+            let userContextId = (aParams && aParams.userContextId) || 0;
 
             let browser;
             let usingPreloadedContent = false;
@@ -1945,7 +1998,8 @@
             // Private windows are not included because both the label and the
             // icon for the tab would be set incorrectly (see bug 1195981).
             if (aURI == BROWSER_NEW_TAB_URL &&
-                !PrivateBrowsingUtils.isWindowPrivate(window)) {
+                !PrivateBrowsingUtils.isWindowPrivate(window) &&
+	              !userContextId) {
               browser = this._getPreloadedBrowser();
               if (browser) {
                 usingPreloadedContent = true;
@@ -1959,7 +2013,8 @@
                                              remote: false,
                                              uriIsAboutBlank: uriIsAboutBlank,
                                              relatedBrowser: aParams.relatedBrowser,
-                                             opener: aParams.opener});
+                                             opener: aParams.opener,
+	                                           userContextId});
             }
 
             let notificationbox = this.getNotificationBox(browser);
@@ -2035,6 +2090,7 @@
             var aOriginPrincipal;
             var aOpener;
             var aSkipBackgroundNotify;
+            var aUserContextId;
             if (arguments.length == 2 &&
                 typeof arguments[1] == "object" &&
                 !(arguments[1] instanceof Ci.nsIURI)) {
@@ -2057,6 +2113,7 @@
               aOriginPrincipal      = params.originPrincipal;
               aOpener               = params.opener;
               aSkipBackgroundNotify = params.skipBackgroundNotify;
+              aUserContextId        = params.userContextId;
             }
 
             // if we're adding tabs, we're past interrupt mode, ditch the owner
@@ -2088,6 +2145,11 @@
             if (aSkipBackgroundNotify) {
               t.setAttribute("skipbackgroundnotify", true);
             }
+
+ 	
+	          if (aUserContextId) {
+	            t.setAttribute("usercontextid", aUserContextId);
+	          }
 
             t.className = "tabbrowser-tab";
 
@@ -2133,6 +2195,7 @@
               forceNotRemote: aForceNotRemote,
               relatedBrowser: aRelatedBrowser,
               opener: aOpener,
+              userContextId: aUserContextId,
             };
             let { usingPreloadedContent } = this._linkBrowserToTab(t, aURI, browserParams);
             let b = t.linkedBrowser;
@@ -2754,6 +2817,17 @@
               aOurTab._sharingState = aOtherTab._sharingState;
               webrtcUI.swapBrowserForNotification(otherBrowser, ourBrowser);
             }
+
+            if (aOtherTab.hasAttribute("usercontextid")) {
+	              let userContextId = aOtherTab.getAttribute("usercontextid");
+	              aOurTab.setAttribute("usercontextid", userContextId);
+	              ourBrowser.setAttribute("usercontextid", userContextId);
+	              modifiedAttrs.push("usercontextid");
+	            } else {
+	              aOurTab.removeAttribute("usercontextid");
+	              ourBrowser.removeAttribute("usercontextid");
+	              modifiedAttrs.push("usercontextid");
+	            }
 
             // If the other tab is pending (i.e. has not been restored, yet)
             // then do not switch docShells but retrieve the other tab's state
@@ -5132,6 +5206,7 @@
                            anonid="tabs-newtab-button"
                            command="cmd_newNavigatorTab"
                            onclick="checkForMiddleClick(this, event);"
+                           context="new-tab-button-popup"
                            onmouseover="document.getBindingParent(this)._enterNewTab();"
                            onmouseout="document.getBindingParent(this)._leaveNewTab();"
                            tooltip="dynamic-shortcut-tooltip"/>

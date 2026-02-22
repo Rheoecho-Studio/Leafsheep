@@ -67,6 +67,10 @@
 #ifdef MOZ_SHARED_MOZGLUE
 @BINPATH@/@DLL_PREFIX@mozglue@DLL_SUFFIX@
 #endif
+#if defined(XP_WIN) && defined(MOZ_MIMALLOC)
+; * needed because 32-bit also has a DLL called mimalloc-redirect32.dll
+@BINPATH@/mimalloc*@DLL_SUFFIX@
+#endif
 #ifndef MOZ_STATIC_JS
 @BINPATH@/@DLL_PREFIX@mozjs@DLL_SUFFIX@
 #endif
@@ -356,6 +360,8 @@
 @RESPATH@/browser/components/nsBrowserGlue.js
 @RESPATH@/browser/components/nsSetDefaultBrowser.manifest
 @RESPATH@/browser/components/nsSetDefaultBrowser.js
+@RESPATH@/browser/components/internaluserscripts.js
+@RESPATH@/browser/components/internaluserscripts.manifest
 @RESPATH@/browser/components/devtools-startup.manifest
 @RESPATH@/browser/components/devtools-startup.js
 @RESPATH@/browser/components/browser-newtab.xpt
@@ -538,6 +544,9 @@
 @RESPATH@/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/chrome.manifest
 @RESPATH@/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/icon.png
 @RESPATH@/browser/extensions/{972ce4c6-7e08-4474-a285-3208198ce6fd}/install.rdf
+@RESPATH@/browser/chrome/internaluserscripts.manifest
+@RESPATH@/browser/chrome/internaluserscripts/*
+@RESPATH@/browser/internal-userscripts/*
 @RESPATH@/chrome/toolkit@JAREXT@
 @RESPATH@/chrome/toolkit.manifest
 #ifdef MOZ_GTK

@@ -16,7 +16,7 @@ export LDFLAGS="$LDFLAGS -flto=thin"
 
 # Standard build options for Leafsheep
 ac_add_options --enable-application=leafsheep
-ac_add_options --enable-optimize="-O3"
+ac_add_options --enable-optimize="-O3 -flto=thin"
 ac_add_options --enable-jemalloc
 ac_add_options --enable-strip
 ac_add_options --enable-devtools

@@ -1,7 +1,16 @@
 #define GUAO_PREF general.useragent.override
 
 #define UXP_VERSION @MOZILLA_UAVERSION_U@
+
+// Commit ID from LSVERSION file
+#ifdef MOZ_APP_COMMIT_ID
+#define UXP_VERSION_SLICE Goanna/@UXP_VERSION@ (@MOZ_APP_COMMIT_ID@)
+#define COMMIT_SLICE (@MOZ_APP_COMMIT_ID@)
+#else
 #define UXP_VERSION_SLICE Goanna/@UXP_VERSION@
+#define COMMIT_SLICE (dev)
+#endif
+
 #define UXP_DATE_SLICE Goanna/20170101
 #define APP_SLICE Leafsheep/@MOZ_APP_VERSION@
 
@@ -29,8 +38,6 @@ pref("@GUAO_PREF@.dropbox.com","Mozilla/5.0 (%OS_SLICE% rv:68.9) @GK_SLICE@ Fire
 pref("@GUAO_PREF@.bilibili.com","Mozilla/5.0 (%OS_SLICE% rv:140.0) @GK_SLICE@ Firefox/140.0 (Leafsheep)");
 pref("@GUAO_PREF@.youtube.com","Mozilla/5.0 (%OS_SLICE%) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36 (Leafsheep)");
 pref("@GUAO_PREF@.kroger.com","Mozilla/5.0 (%OS_SLICE% rv:86.0) @GK_SLICE@ Firefox/86.0 (Leafsheep)");
-pref("@GUAO_PREF@.live.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
-pref("@GUAO_PREF@.msn.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");
 pref("@GUAO_PREF@.netteller.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@");
 pref("@GUAO_PREF@.patientaccess.com","Mozilla/5.0 (%OS_SLICE% rv:60.0) @GK_SLICE@ Firefox/60.0 @APP_SLICE@");
 pref("@GUAO_PREF@.outlook.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep)");

@@ -1,0 +1,6 @@
+{
+    "api_base": "https://repo.palemoon.org/api/v1",
+    "owner": "MoonchildProductions",
+    "repo": "UXP",
+    "fields": ["masterid", "tags", "release", "tagsid", "releaseid"]
+}

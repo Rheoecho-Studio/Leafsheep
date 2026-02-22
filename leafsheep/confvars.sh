@@ -4,7 +4,7 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 MOZ_APP_BASENAME=Leafsheep
-MOZ_APP_VENDOR=Leafsheep-Dev
+MOZ_APP_VENDOR=RheoEcho
 MOZ_PHOENIX=1
 MOZ_AUSTRALIS=1
 MC_BASILISK=1
@@ -16,31 +16,44 @@ if test "$MOZ_WIDGET_TOOLKIT" = "windows" -o \
   MOZ_BUNDLED_FONTS=1
 fi
 
-# For Leafsheep we want to use 8.YYYY.MM.DD as MOZ_APP_VERSION in release
-# builds so add-on developers have something to target while maintaining
-# Firefox compatiblity.
-# To enable add "export BASILISK_VERSION=1" to the .mozconfig file.
-# However, this will cause a full rebuild at 00:00 UTC every day so
-# don't export the variable if you are in development or don't care.
-#
-# Also check if BASILISK_VERSION is equal to something other than 1.
-# If equal to something other than 1, then we set the MOZ_APP_VERSION
-# to 8.BASILISK_VERSION
-# When not exported at all we fall back the value in the version*.txt file.
-if test -n "$BASILISK_VERSION" ; then
-    if [ "$BASILISK_VERSION" = "1" ]; then
-        MOZ_APP_VERSION=8.`date -u '+%Y.%m.%d'`
-        MOZ_APP_VERSION_DISPLAY=`date -u '+%Y.%m.%d'`
-    else
-        MOZ_APP_VERSION=8.$BASILISK_VERSION
-        MOZ_APP_VERSION_DISPLAY=$BASILISK_VERSION
+# 从LSVERSION文件读取版本信息
+# LSVERSION格式：
+# 第一行：频道 (ROLLING)
+# 第二行：版本号 (1.1)
+# 第三行：服务包 (SP0)
+# 第四行：UXP commit ID (72d1f9b)
+
+LSVERSION_FILE="${_topsrcdir}/LSVERSION"
+if test -f "$LSVERSION_FILE"; then
+    # 读取LSVERSION文件内容
+    CHANNEL=$(head -n 1 "$LSVERSION_FILE")
+    VERSION=$(sed -n '2p' "$LSVERSION_FILE")
+    SERVICE_PACK=$(sed -n '3p' "$LSVERSION_FILE")
+    COMMIT_ID=$(sed -n '4p' "$LSVERSION_FILE")
+    
+    # 如果COMMIT_ID为空，设置为dev
+    if [ -z "$COMMIT_ID" ]; then
+        COMMIT_ID="dev"
     fi
+    
+    # 提取SP数字（去掉SP前缀）
+    SP_NUMBER=$(echo "$SERVICE_PACK" | sed 's/SP//')
+    
+    # MOZ_APP_VERSION: 格式为 主版本.次版本.SP数 (如 1.1.0)
+    MOZ_APP_VERSION="$VERSION.$SP_NUMBER"
+    
+    # MOZ_APP_VERSION_DISPLAY: 格式为 版本号 SP数 (kernel-commit_id)
+    MOZ_APP_VERSION_DISPLAY="$VERSION $SERVICE_PACK (kernel-$COMMIT_ID)"
+    
+    # MOZ_APP_COMMIT_ID: 用于User Agent中的commit ID
+    MOZ_APP_COMMIT_ID="$COMMIT_ID"
 else
+    # 如果LSVERSION文件不存在，回退到原来的逻辑
     MOZ_APP_VERSION=`cat ${_topsrcdir}/$MOZ_BUILD_APP/config/version.txt`
     MOZ_APP_VERSION_DISPLAY=`cat ${_topsrcdir}/$MOZ_BUILD_APP/config/version_display.txt`
 fi
 
-MOZ_EXTENSIONS_DEFAULT=" gio"
+#MOZ_EXTENSIONS_DEFAULT=" gio"
 
 # MOZ_APP_DISPLAYNAME will be set by branding/configure.sh
 # MOZ_BRANDING_DIRECTORY is the default branding directory used when none is
