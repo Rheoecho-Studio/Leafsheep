@@ -854,19 +854,6 @@ Available commands:<br>
                                     </svg>
                                 </button>
                                 
-                                <!-- View搜索按钮 -->
-                                <button id="view-search-btn" 
-                                        class="search-btn view-search-btn" 
-                                        style="background: #a78bfa; color: white; border: none; 
-                                               width: 50px; height: 50px; border-radius: 25px; 
-                                               cursor: pointer; display: flex; align-items: center; 
-                                               justify-content: center; opacity: 1; transition: all 0.3s ease;
-                                               box-shadow: 0 4px 12px rgba(167, 139, 250, 0.3);">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/>
-                                    </svg>
-                                </button>
-                                
                                 <!-- 普通搜索按钮 -->
                                 <button id="normal-search-btn" 
                                         class="search-btn normal-search-btn" 
@@ -922,12 +909,11 @@ Available commands:<br>
                 // 获取DOM元素
                 const searchInput = windowElement.querySelector('#search-input');
                 const enginePills = windowElement.querySelectorAll('.engine-pill');
-                const viewSearchBtn = windowElement.querySelector('#view-search-btn');
                 const normalSearchBtn = windowElement.querySelector('#normal-search-btn');
                 const engineSelectorBtn = windowElement.querySelector('#engine-selector-btn');
                 
-                let currentEngine = 'yep';
-                let currentEngineType = 'view';
+                let currentEngine = 'bing';
+                let currentEngineType = 'normal';
                 
                 // 添加CSS样式
                 const style = document.createElement('style');
@@ -951,12 +937,6 @@ Available commands:<br>
                     }
                     
                     .engine-pill.active {
-                        background: rgba(167, 139, 250, 0.3);
-                        border-color: #a78bfa;
-                        color: #a78bfa;
-                    }
-                    
-                    .engine-pill[data-type="normal"].active {
                         background: rgba(79, 209, 217, 0.3);
                         border-color: #4fd1d9;
                         color: #4fd1d9;
@@ -996,7 +976,7 @@ Available commands:<br>
                     }
                     
                     #search-input:focus {
-                        border-color: rgba(167, 139, 250, 0.5);
+                        border-color: rgba(79, 209, 217, 0.5);
                         background: rgba(255, 255, 255, 0.15);
                     }
                 `;
@@ -1011,9 +991,6 @@ Available commands:<br>
                         // 更新当前搜索引擎
                         currentEngine = selectedEngine;
                         currentEngineType = selectedType;
-                        
-                        // 更新View搜索按钮状态
-                        this.updateViewSearchButton(viewSearchBtn, currentEngineType);
                         
                         // 更新所有药丸的激活状态
                         enginePills.forEach(pill => {
@@ -1037,18 +1014,7 @@ Available commands:<br>
                         // 更新当前搜索引擎
                         currentEngine = pill.dataset.engine;
                         currentEngineType = pill.dataset.type;
-                        
-                        // 更新View搜索按钮状态
-                        this.updateViewSearchButton(viewSearchBtn, currentEngineType);
                     });
-                });
-                
-                // View搜索按钮点击事件
-                viewSearchBtn.addEventListener('click', () => {
-                    const searchText = searchInput.value.trim();
-                    if (searchText) {
-                        this.performViewSearch(searchText, currentEngine);
-                    }
                 });
                 
                 // 普通搜索按钮点击事件
@@ -1065,27 +1031,10 @@ Available commands:<br>
                         e.preventDefault();
                         const searchText = searchInput.value.trim();
                         if (searchText) {
-                            if (currentEngineType === 'view') {
-                                this.performViewSearch(searchText, currentEngine);
-                            } else {
-                                this.performNormalSearch(searchText, currentEngine);
-                            }
+                            this.performNormalSearch(searchText, currentEngine);
                         }
                     }
                 });
-                
-                // 初始更新View搜索按钮状态
-                this.updateViewSearchButton(viewSearchBtn, currentEngineType);
-            }
-            
-            updateViewSearchButton(viewSearchBtn, engineType) {
-                if (engineType === 'view') {
-                    viewSearchBtn.style.opacity = '1';
-                    viewSearchBtn.disabled = false;
-                } else {
-                    viewSearchBtn.style.opacity = '0.3';
-                    viewSearchBtn.disabled = true;
-                }
             }
             
             createEngineSelectionPopup(anchorElement, callback) {
@@ -1110,13 +1059,11 @@ Available commands:<br>
                 
                 // 搜索引擎配置
                 const searchEngines = {
-                    'yep': { name: 'Yep', type: 'view', url: 'https://yep.com/web?q=' },
                     'bing': { name: 'Bing', type: 'normal', url: 'https://www.bing.com/search?q=' },
                     'duckduckgo': { name: 'DuckDuckGo', type: 'normal', url: 'https://duckduckgo.com/?q=' },
                     'google': { name: 'Google', type: 'normal', url: 'https://www.google.com/search?q=' },
                     'baidu': { name: 'Baidu', type: 'normal', url: 'https://www.baidu.com/s?wd=' },
                     'sogou': { name: 'sogou', type: 'normal', url: 'https://www.sogou.com/web?query=' },
-                    '360': { name: '360', type: 'normal', url: 'https://www.so.com/s?q=' },
                     'quark': { name: 'quark', type: 'normal', url: 'https://quark.sm.cn/s?q=' },
                     'brave': { name: 'Brave', type: 'normal', url: 'https://search.brave.com/search?q=' },
                     'yahoo': { name: 'Yahoo', type: 'normal', url: 'https://search.yahoo.com/search?p=' },
@@ -1130,7 +1077,6 @@ Available commands:<br>
                 
                 // 按类型分组
                 const groupedEngines = {
-                    'view': [],
                     'normal': [],
                     'specific': []
                 };
@@ -1141,22 +1087,6 @@ Available commands:<br>
                 
                 // 创建弹窗内容
                 let popupContent = '<div style="color: #d8dee9; font-family: \'Noto Sans\', sans-serif;">';
-                
-                // VIEW搜索引擎
-                if (groupedEngines.view.length > 0) {
-                    popupContent += '<div style="margin-bottom: 15px;">';
-                    popupContent += '<div style="color: #a78bfa; font-size: 12px; margin-bottom: 8px; font-weight: bold;">VIEW Search</div>';
-                    groupedEngines.view.forEach(engine => {
-                        popupContent += `<div class="engine-option" data-engine="${engine.key}" data-type="${engine.type}" 
-                                         style="padding: 8px 12px; margin: 2px 0; border-radius: 8px; cursor: pointer; 
-                                                transition: all 0.2s ease; color: #d8dee9;"
-                                         onmouseover="this.style.background='rgba(167, 139, 250, 0.2)'"
-                                         onmouseout="this.style.background='transparent'">
-                                         ${engine.name}
-                                        </div>`;
-                    });
-                    popupContent += '</div>';
-                }
                 
                 // 普通搜索引擎
                 if (groupedEngines.normal.length > 0) {
@@ -1229,24 +1159,6 @@ Available commands:<br>
                 }
             }
             
-            performViewSearch(searchText, engine) {
-                const searchUrl = this.getSearchUrl(searchText, engine);
-                
-                // 创建Preview应用窗口并加载搜索URL
-                const previewWindow = this.createBrowserWindow();
-                
-                // 等待Preview窗口加载完成后设置URL
-                setTimeout(() => {
-                    const searchInput = previewWindow.querySelector('#preview-search');
-                    if (searchInput) {
-                        searchInput.value = searchUrl;
-                        // 触发搜索
-                        const event = new KeyboardEvent('keypress', { key: 'Enter' });
-                        searchInput.dispatchEvent(event);
-                    }
-                }, 500);
-            }
-            
             performNormalSearch(searchText, engine) {
                 const searchUrl = this.getSearchUrl(searchText, engine);
                 // 在新标签页中打开搜索
@@ -1256,7 +1168,6 @@ Available commands:<br>
             getSearchUrl(searchText, engine) {
                 // 搜索引擎映射
                 const searchEngines = {
-                    'yep': { url: 'https://yep.com/web?q=', type: 'view' },
                     'bing': { url: 'https://www.bing.com/search?q=', type: 'normal' },
                     'duckduckgo': { url: 'https://duckduckgo.com/?q=', type: 'normal' },
                     'startpage': { url: 'https://www.startpage.com/do/search?q=', type: 'normal' },
@@ -1268,7 +1179,6 @@ Available commands:<br>
                     'ekoru': { url: 'https://www.ekoru.org/?q=', type: 'normal' },
                     'yahoo': { url: 'https://search.yahoo.com/search?p=', type: 'normal' },
                     'sogou': { url: 'https://www.sogou.com/web?query=', type: 'normal' },
-                    '360': { url: 'https://www.so.com/s?q=', type: 'normal' },
                     'baidu': { url: 'https://www.baidu.com/s?wd=', type: 'normal' },
                     'quark': { url: 'https://quark.sm.cn/s?q=', type: 'normal' },
                     'github': { url: 'https://github.com/search?q=', type: 'specific' },
@@ -1279,8 +1189,8 @@ Available commands:<br>
                 if (engineConfig) {
                     return engineConfig.url + encodeURIComponent(searchText);
                 }
-                // 默认使用Yep搜索
-                return 'https://yep.com/web?q=' + encodeURIComponent(searchText);
+                // 默认使用Bing搜索
+                return 'https://www.bing.com/search?q=' + encodeURIComponent(searchText);
             }
         }
         
