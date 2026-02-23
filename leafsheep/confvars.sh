@@ -44,9 +44,6 @@ if test -f "$LSVERSION_FILE"; then
     
     # MOZ_APP_VERSION_DISPLAY: 格式为 版本号 SP数 (kernel-commit_id)
     MOZ_APP_VERSION_DISPLAY="$VERSION $SERVICE_PACK (kernel-$COMMIT_ID)"
-    
-    # MOZ_APP_COMMIT_ID: 用于User Agent中的commit ID
-    MOZ_APP_COMMIT_ID="$COMMIT_ID"
 else
     # 如果LSVERSION文件不存在，回退到原来的逻辑
     MOZ_APP_VERSION=`cat ${_topsrcdir}/$MOZ_BUILD_APP/config/version.txt`

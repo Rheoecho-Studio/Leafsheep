@@ -129,22 +129,25 @@
           </vbox>
 #ifdef MC_PRIVATE_BUILD
 <description class="text-blurb" id="communityDesc">
-              Leafsheep is based on the UXP platform and Basilisk. Without them, Leafsheep would not have come into being!<label class="text-link" href="https://leafsheep-browser.org/">Leafsheep website</label>.
+              Leafsheep is based on the UXP platform, Basilisk and EGRTVC. Without them, Leafsheep would not have come into being!<label class="text-link" href="https://rheoecho.fyi/bl_w">Leafsheep website</label>.
           </description>
 #else
           <description class="text-blurb" id="communityDesc">
-			  Leafsheep is community software released by <label class="text-link" href="https://leafsheep-browser.org/">the Leafsheep Browser team</label> and Mozilla developers. Learn <label class="text-link" useoriginprincipal="true" href="about:credits">who contributed</label> to this software. Leafsheep was formerly developed by the <a href="https://www.palemoon.org">Pale Moon</a> team.
+			  Leafsheep is <label class="text-link" href="https://rheoecho.fyi/bl_w">RheoEcho</label> software release by The Basilisk Browser team (basilisk-dev) , Moonchild Productions and Mozilla developers. Without them, Leafsheep would not be what it is today. Learn <label class="text-link" useoriginprincipal="true" href="about:credits">who contributed</label> to this software.
           </description>
           <description class="text-blurb" id="contributeDesc">
-              Want to help? Please consider <label class="text-link" href="https://www.palemoon.org/donations.shtml">donating to the Pale Moon project</label> or get involved with the <label class="text-link" href="https://repo.palemoon.org/MoonchildProductions/UXP">development</label> of the Unified XUL Platform.
+              Want to help? <label class="text-link" href="https://rheoecho.fyi">donate us</label>
           </description>
 #endif
         </vbox>
       </vbox>
     </hbox>
-    <!-- 添加显示网页的框架 -->
-    <vbox id="webpageFrameBox" style="padding: 10px; background-color: white; border-radius: 5px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; margin-top: 20px;">
-      <iframe id="webpageFrame" src="https://codeberg.org/MIRN/LeafSheep" style="width: 100%; height: 300px;"/>
+    <!-- Update -->
+    <vbox id="updateButtonBox" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; margin-top: 20px; display: flex; justify-content: center;">
+      <button id="updateButton" 
+              label="Update" 
+              style="background-color: #29ff9a; color: #001405; border-radius: 25px; padding: 10px 20px; font-size: 14px; font-weight: bold; border: none; min-width: auto; width: auto;"
+              oncommand="if (window.opener &amp;&amp; window.opener.gBrowser) { window.opener.gBrowser.selectedTab = window.opener.gBrowser.addTab(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;); window.close(); } else { window.open(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;, &apos;_blank&apos;); }"/>
     </vbox>
     <vbox id="bottomBox">
       <hbox pack="center">

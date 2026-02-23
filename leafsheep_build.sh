@@ -113,12 +113,67 @@ if [ $(wc -l < LSVERSION) -eq 3 ]; then
 fi
 
 echo "Commit ID written to LSVERSION file (line 4)"
+
+# 更新uaoverrides.inc文件中的LSVAPI宏定义
+# 读取LSVERSION文件的最新内容
+LS_VERSION=$(sed -n '2p' LSVERSION)
+LS_SP=$(sed -n '3p' LSVERSION)
+LS_UXP=$(sed -n '4p' LSVERSION)
+
+# 更新uaoverrides.inc文件中的LSVAPI宏定义
+UAFILE="leafsheep/branding/shared/uaoverrides.inc"
+if [ -f "$UAFILE" ]; then
+    # 备份原文件
+    cp "$UAFILE" "$UAFILE.backup"
+    
+    # 更新LSVAPI_LS宏定义
+    sed -i "s/^#define LSVAPI_LS.*/#define LSVAPI_LS $LS_VERSION/" "$UAFILE"
+    
+    # 更新LSVAPI_SP宏定义
+    sed -i "s/^#define LSVAPI_SP.*/#define LSVAPI_SP $LS_SP/" "$UAFILE"
+    
+    # 更新LSVAPI_UXP宏定义
+    sed -i "s/^#define LSVAPI_UXP.*/#define LSVAPI_UXP $LS_UXP/" "$UAFILE"
+    
+    echo "LSVAPI macros updated in uaoverrides.inc:"
+    echo "  LSVAPI_LS: $LS_VERSION"
+    echo "  LSVAPI_SP: $LS_SP"
+    echo "  LSVAPI_UXP: $LS_UXP"
+else
+    echo "Warning: uaoverrides.inc file not found!"
+fi
+
+# 将commit ID写入version_display.txt文件
+VERSION_DISPLAY_FILE="leafsheep/config/version_display.txt"
+if [ -f "$VERSION_DISPLAY_FILE" ]; then
+    # 备份原文件
+    cp "$VERSION_DISPLAY_FILE" "$VERSION_DISPLAY_FILE.backup"
+    
+    # 读取原文件内容，保留前面的版本信息，只更新commit ID部分
+    OLD_CONTENT=$(cat "$VERSION_DISPLAY_FILE")
+    
+    # 如果原内容包含括号，替换括号内的内容；否则在末尾添加commit ID
+    if [[ "$OLD_CONTENT" =~ \(.*\) ]]; then
+        # 替换括号内的内容为新的commit ID
+        NEW_CONTENT=$(echo "$OLD_CONTENT" | sed "s/([^)]*)/($LS_UXP)/")
+    else
+        # 在末尾添加commit ID（确保有空格）
+        NEW_CONTENT="$OLD_CONTENT ($LS_UXP)"
+    fi
+    
+    # 写入更新后的内容
+    echo "$NEW_CONTENT" > "$VERSION_DISPLAY_FILE"
+    echo "Version display updated: $NEW_CONTENT"
+else
+    echo "Warning: version_display.txt file not found!"
+fi
+
 echo
 
 # 确保回到脚本所在的根目录
 cd "$(dirname "$0")"
 
-# 让用户选择当前系统
+# 选择当前系统
 echo "Please select your current system:"
 echo "1) Windows"
 echo "2) Linux/FreeBSD/illumos"

@@ -1,19 +1,13 @@
 #!/bin/bash
 set -e  # Exit immediately on error
 
-# ===================== 颜色样式定义 =====================
-# 主色调：29ff9a (RGB: 41, 255, 154) + 加粗
+# 29ff9a (RGB: 41, 255, 154)
 MAIN_COLOR="\e[1;38;2;41;255;154m"
-# 灰色（次要信息）+ 细体
 GRAY="\e[2;38;2;150;150;150m"
-# 红色（错误）+ 加粗
 RED="\e[1;31m"
-# 黄色（警告）+ 加粗
 YELLOW="\e[1;33m"
-# 重置样式（必须加，否则颜色会延续）
 RESET="\e[0m"
 
-# ===================== 原有配置 =====================
 # Configuration file
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CONFIG_FILE="${SCRIPT_DIR}/config.json"
@@ -26,7 +20,7 @@ OLD_FILES=(
     "${SCRIPT_DIR}/version_old3.json"
 )
 
-# ===================== 带颜色的标题输出 =====================
+# Colors
 echo -e "${MAIN_COLOR}===== Easy Git Real Time Version Checker =====${RESET}"
 echo -e "${MAIN_COLOR}Support: Gitea${RESET}"
 echo -e "${GRAY}Working directory: ${SCRIPT_DIR}${RESET}"
@@ -150,7 +144,7 @@ if field_requested "masterid"; then
             echo ""
             return
         fi
-        echo "$result" | jq -r '.commit.id[:7] // ""'
+        echo "$result" | jq -r '.commit.id[:10] // ""'
     }
     masterid=$(get_latest_commit_short "$branch")
     if [[ -n "$masterid" ]]; then
@@ -176,7 +170,7 @@ get_commit_by_tag() {
         return
     fi
     echo "$tags_json" | jq -r --arg tag "$tag_name" '
-        .[] | select(.name == $tag) | .commit.sha[:7] // ""'
+        .[] | select(.name == $tag) | .commit.sha[:10] // ""'
 }
 
 # Get latest tag (name and commit ID) – only if tags or tagsid is requested
@@ -209,7 +203,7 @@ if field_requested "tags" || field_requested "tagsid"; then
         # Parse latest tag name and commit ID (short)
         local latest_info
         latest_info=$(echo "$tags_json" | jq -r '
-            [ .[] | {name: .name, date: .commit.created, sha: .commit.sha[:7]} ] | 
+            [ .[] | {name: .name, date: .commit.created, sha: .commit.sha[:10]} ] | 
             sort_by(.date) | reverse | 
             .[0] | "\(.name)\n\(.sha)"' 2>&1)
         local jq_exit=$?

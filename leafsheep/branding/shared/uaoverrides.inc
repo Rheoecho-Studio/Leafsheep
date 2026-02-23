@@ -1,26 +1,22 @@
 #define GUAO_PREF general.useragent.override
 
 #define UXP_VERSION @MOZILLA_UAVERSION_U@
-
-// Commit ID from LSVERSION file
-#ifdef MOZ_APP_COMMIT_ID
-#define UXP_VERSION_SLICE Goanna/@UXP_VERSION@ (@MOZ_APP_COMMIT_ID@)
-#define COMMIT_SLICE (@MOZ_APP_COMMIT_ID@)
-#else
 #define UXP_VERSION_SLICE Goanna/@UXP_VERSION@
-#define COMMIT_SLICE (dev)
-#endif
-
 #define UXP_DATE_SLICE Goanna/20170101
 #define APP_SLICE Leafsheep/@MOZ_APP_VERSION@
 
-#define GK_VERSION 8
+#define GK_VERSION 147.0.4
 #define GK_SLICE Gecko/20100101
 #define FX_SLICE Firefox/@GK_VERSION@
 
 // Pale Moon Version needed for challenges.cloudflare.com user agent override
 #define PM_VERSION 33.6.1
 #define PM_SLICE PaleMoon/@PM_VERSION@
+
+//LSVAPI
+#define LSVAPI_LS
+#define LSVAPI_SP
+#define LSVAPI_UXP
 
 // %OS_SLICE% macro is resolved at runtime, see MoonchildProductions/UXP/issues/1473
 
@@ -84,9 +80,14 @@ pref("@GUAO_PREF@.ldoceonline.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK
 pref("@GUAO_PREF@.yuku.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ @APP_SLICE@");
 
 // Domains Leafsheep overrides that are not in the Pale Moon overrides
-pref("@GUAO_PREF@.slack.com","Mozilla/5.0 (%OS_SLICE% rv:120.0) @GK_SLICE@ Firefox/120.0 @APP_SLICE@");
+pref("@GUAO_PREF@.slack.com","Mozilla/5.0 (%OS_SLICE% rv:120.0) @GK_SLICE@ Firefox/128.0 @APP_SLICE@");
 
 // Domains that require a Pale Moon user agent override
 //pref("@GUAO_PREF@.challenges.cloudflare.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @UXP_VERSION_SLICE@ @FX_SLICE@ @PM_SLICE@");
 
 // ============================================================================
+
+//Leafsheep Rolling Update (LSVAPI)
+pref("@GUAO_PREF@.rheoecho.fyi","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");
+pref("@GUAO_PREF@.ie.icoa.cn","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");
+pref("@GUAO_PREF@.codeberg.org","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");
