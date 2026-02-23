@@ -148,6 +148,7 @@
               label="Update" 
               style="background-color: #29ff9a; color: #001405; border-radius: 25px; padding: 10px 20px; font-size: 14px; font-weight: bold; border: none; min-width: auto; width: auto;"
               oncommand="if (window.opener &amp;&amp; window.opener.gBrowser) { window.opener.gBrowser.selectedTab = window.opener.gBrowser.addTab(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;); window.close(); } else { window.open(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;, &apos;_blank&apos;); }"/>
+      <!--<p style="text-align: center;">The update of this version of Leafsheep is managed by a third party.</p>-->
     </vbox>
     <vbox id="bottomBox">
       <hbox pack="center">
