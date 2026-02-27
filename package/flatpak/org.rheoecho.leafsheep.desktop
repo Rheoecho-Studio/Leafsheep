@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=LeafSheep
+Comment=The NEXT XUL platform & Meta web browser
+GenericName=Web Browser
+Keywords=web;browser;internet
+Exec=leafsheep %U
+Icon=org.rheoecho.leafsheep
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/xml;application/rss+xml;application/rdf+xml;image/gif;image/jpeg;image/png;x-scheme-handler/http;x-scheme-handler/https;x-scheme-handler/ftp;x-scheme-handler/chrome;video/webm;application/x-xpinstall;
+StartupNotify=true
+Categories=Network;WebBrowser;
+StartupWMClass=LeafSheep

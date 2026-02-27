@@ -1,0 +1,182 @@
+app-id: org.rheoecho.leafsheep
+runtime: org.freedesktop.Platform
+runtime-version: '24.08'
+sdk: org.freedesktop.Sdk
+command: leafsheep
+separate-locales: false
+
+# 不添加任何扩展
+add-extensions: {}
+auto-add-extensions: false
+
+finish-args:
+  # 基础X11/Wayland支持
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --env=MOZ_ENABLE_WAYLAND=1
+  
+  # GPU加速
+  - --device=dri
+  - --env=LIBGL_DRIVERS_PATH=/usr/lib/dri
+  
+  # 网络
+  - --share=network
+  
+  # 声音
+  - --socket=pulseaudio
+  - --socket=cups
+  - --socket=pcsc
+  - --socket=session-bus
+  
+  # 文件系统访问
+  - --filesystem=/run/.heim_org.h5l.kcm-socket:ro
+  - --filesystem=xdg-config/gtk-3.0:ro
+  - --filesystem=xdg-download
+  - --filesystem=xdg-run/speech-dispatcher:ro
+  
+  # DBus通信
+  - --talk-name=org.a11y.Bus
+  - --talk-name=org.freedesktop.FileManager1
+  - --talk-name=org.gtk.vfs.*
+  - --talk-name=org.freedesktop.Notifications
+  - --talk-name=org.freedesktop.ScreenSaver
+  - --talk-name=org.gnome.SessionManager
+  
+  # 系统DBus
+  - --system-talk-name=org.freedesktop.NetworkManager
+
+modules:
+  # 添加dbus-glib依赖
+  - name: dbus-glib
+    buildsystem: autotools
+    sources:
+      - type: archive
+        url: https://dbus.freedesktop.org/releases/dbus-glib/dbus-glib-0.112.tar.gz
+        sha256: 7d550dccdfcd286e33895501829ed971eeb65c614e73aadb4a08aeef719b143a
+    cleanup:
+      - /include
+      - /lib/pkgconfig
+      - /share
+
+  # 主应用
+  - name: leafsheep
+    buildsystem: simple
+    build-commands:
+      # 创建目录结构
+      - mkdir -p /app/bin
+      - mkdir -p /app/lib/leafsheep
+      - mkdir -p /app/share/applications
+      - mkdir -p /app/share/icons/hicolor/256x256/apps
+      - mkdir -p /app/share/metainfo
+      
+      # 复制应用文件 - 注意路径：leafsheep/leafsheep/
+      - cp -r leafsheep/leafsheep/* /app/lib/leafsheep/ 2>/dev/null || cp -r leafsheep/* /app/lib/leafsheep/
+      
+      # 查找可执行文件
+      - |
+        # 可能的可执行文件路径
+        EXECUTABLE=""
+        
+        if [ -f "/app/lib/leafsheep/leafsheep" ] && [ ! -d "/app/lib/leafsheep/leafsheep" ]; then
+          EXECUTABLE="/app/lib/leafsheep/leafsheep"
+        elif [ -f "/app/lib/leafsheep/leafsheep-bin" ]; then
+          EXECUTABLE="/app/lib/leafsheep/leafsheep-bin"
+        elif [ -f "/app/lib/leafsheep/firefox" ]; then
+          EXECUTABLE="/app/lib/leafsheep/firefox"
+        fi
+        
+        if [ -z "$EXECUTABLE" ]; then
+          echo "Searching for executable files..."
+          for f in /app/lib/leafsheep/*; do
+            if [ -f "$f" ] && [ -x "$f" ] && [ ! -d "$f" ]; then
+              EXECUTABLE="$f"
+              echo "Found executable: $f"
+              break
+            fi
+          done
+        fi
+        
+        if [ -z "$EXECUTABLE" ] && [ -d "/app/lib/leafsheep/bin" ]; then
+          for f in /app/lib/leafsheep/bin/*; do
+            if [ -f "$f" ] && [ -x "$f" ] && [ ! -d "$f" ]; then
+              EXECUTABLE="$f"
+              echo "Found executable in bin: $f"
+              break
+            fi
+          done
+        fi
+        
+        if [ -n "$EXECUTABLE" ]; then
+          echo "Using executable: $EXECUTABLE"
+          echo "$EXECUTABLE" > /app/lib/leafsheep/executable-path.txt
+        else
+          echo "ERROR: No executable found!"
+          ls -la /app/lib/leafsheep/
+          exit 1
+        fi
+      
+      # 创建启动脚本
+      - |
+        cat > /app/bin/leafsheep << 'EOF'
+        #!/bin/bash
+        export TMPDIR=$XDG_RUNTIME_DIR/app/$FLATPAK_ID
+        export MOZ_LEGACY_PROFILES=1
+        export MOZ_ALLOW_DOWNGRADE=1
+        export GTK_PATH=/app/lib/gtk-3.0
+        export LD_LIBRARY_PATH=/app/lib:/app/lib/leafsheep:$LD_LIBRARY_PATH
+        export XCURSOR_PATH=/app/share/icons
+        
+        # 读取可执行文件路径
+        if [ -f /app/lib/leafsheep/executable-path.txt ]; then
+          EXECUTABLE=$(cat /app/lib/leafsheep/executable-path.txt)
+        else
+          EXECUTABLE="/app/lib/leafsheep/leafsheep"
+        fi
+        
+        echo "Starting LeafSheep: $EXECUTABLE"
+        
+        if [ ! -f "$EXECUTABLE" ]; then
+          echo "ERROR: Executable not found: $EXECUTABLE"
+          ls -la /app/lib/leafsheep/
+          exit 1
+        fi
+        
+        if [ ! -x "$EXECUTABLE" ]; then
+          chmod +x "$EXECUTABLE" 2>/dev/null || true
+        fi
+        
+        exec "$EXECUTABLE" "$@"
+        EOF
+      - chmod +x /app/bin/leafsheep
+      
+      # 安装图标
+      - |
+        if [ -f "leafsheep.png" ]; then
+          install -Dm644 leafsheep.png /app/share/icons/hicolor/256x256/apps/org.rheoecho.leafsheep.png
+        elif [ -f "leafsheep/leafsheep/browser/icons/leafsheep.png" ]; then
+          install -Dm644 leafsheep/leafsheep/browser/icons/leafsheep.png /app/share/icons/hicolor/256x256/apps/org.rheoecho.leafsheep.png
+        elif [ -f "leafsheep/browser/icons/leafsheep.png" ]; then
+          install -Dm644 leafsheep/browser/icons/leafsheep.png /app/share/icons/hicolor/256x256/apps/org.rheoecho.leafsheep.png
+        fi
+      
+      # 安装桌面文件
+      - install -Dm644 org.rheoecho.leafsheep.desktop /app/share/applications/org.rheoecho.leafsheep.desktop
+      
+      # 安装AppStream元数据
+      - install -Dm644 org.rheoecho.leafsheep.metainfo.xml /app/share/metainfo/org.rheoecho.leafsheep.metainfo.xml
+      
+    sources:
+      - type: archive
+        path: leafsheep-20260227123759.linux-x86_64-gtk3.tar.xz
+        dest: leafsheep
+        strip-components: 0
+      
+      - type: file
+        path: leafsheep.png
+      
+      - type: file
+        path: org.rheoecho.leafsheep.desktop
+      
+      - type: file
+        path: org.rheoecho.leafsheep.metainfo.xml

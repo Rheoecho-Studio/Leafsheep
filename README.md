@@ -1,12 +1,34 @@
 **LeafSheep**
 # The NEXT XUL platform & Meta web browser
-> Sorry, due to the limitations of our equipment, currently, for those not compatible with Windows or Linux and X86_64, you will need to build it yourself by running leafsheep_build.sh.
+> Sorry, due to the limitations of our equipment, currently, for those not compatible with Windows or Linux or FreeBSD and X86_64, you will need to build it yourself by running leafsheep_build.sh.
+
+* * *
+
+## Update Rules
+
+**_a_._b_._c_._d_ = M._a_ SP _b_ -_d_ (_c_)**
+
+1. **a:** Main version number.
+2. **b:** Function update version number.
+3. **c:** Service Pack update version number.
+4. **d:** 0 indicates that this is the first kernel binary of this SP. 1 means that this version's kernel binary will be continuously updated. _(In some third-party releases, 'd' usually indicates the number of platform updates.)_
+
+| Update | Third-party Release | Official Release | Official Appimage |
+|----|----|----|----|
+| LSVAPI Update | ✗ | ✓ | ✓ |
+| Automation Update | ⚠ | ✗ | ✗ |
+| Difference Update | ⚠ | ✗ | ✓ |
+| Main Version Update | ✓ | ✓ | ✓ |
+| Service Pack Update | ✗ | ✓ | ✓ |
+| Platform Update | ✗ | ⚠ | ✓ |
+
+* * *
 
 ## Prerequisites:
 ### Windows
 **At least Windows 10 64-bit (32-bit build environments or Windows versions < 10 are not supported)**
 
-**Microsoft Visual Studio 2022 (Community Edition (free) or Pro/Paid version -- Express won't work).**
+**Microsoft Visual Studio 2026 (Community Edition (free) or Pro/Paid version -- Express won't work).**
 
 We're assuming you're using the Community Edition for this document.
 Select the following components during install:
@@ -67,9 +89,8 @@ In this case you need to go into "individual components" of the Visual Studio in
 - **General system requirements for running the application itself**
 
 ## Build
-**Run leafsheep_build.sh**
+**Run `leafsheep_build.sh`**
 
 * * *
-
 ### RheoEcho_Studio
-### 2026.02.24 - ???
+### 2026.02.24 - Forever
