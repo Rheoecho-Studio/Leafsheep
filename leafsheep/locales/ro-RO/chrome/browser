@@ -1,69 +1,50 @@
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-<!ENTITY sanitizePrefs2.title          "Settings for Clearing History">
-<!-- LOCALIZATION NOTE (sanitizePrefs2.modal.width): width of the Clear History on Shutdown dialog.
-     Should be large enough to contain the item* strings on a single line.
-     The column width should be set at half of the dialog width. -->
-<!ENTITY sanitizePrefs2.modal.width    "34em">
-<!ENTITY sanitizePrefs2.column.width   "17em">
-<!-- LOCALIZATION NOTE (sanitizePrefs2.inContent.dialog.width): width of the
-     Clear History on Shutdown subdialog in the in-content preferences.
-     Should be large enough to contain the item* strings on a single line.
-     The column width adjusts the width of the first column in the dialog.
-     You can set the column width to a value that makes the dialog look visually balanced,
-     or at half of the dialog width if unsure. -->
-<!ENTITY sanitizePrefs2.inContent.dialog.width "34em">
-<!ENTITY sanitizePrefs2.inContent.column.width "24em">
+searchtip=Search using %S
 
-<!ENTITY sanitizeDialog2.title         "Clear Recent History">
-<!-- LOCALIZATION NOTE (sanitizeDialog2.width): width of the Clear Recent History dialog -->
-<!ENTITY sanitizeDialog2.width         "34em">
+# LOCALIZATION NOTE (searchPlaceholder): this is shown in the searchbox when
+# the user hasn't typed anything yet.
+searchPlaceholder=Search
 
-<!ENTITY clearDataSettings2.label     "When I quit &brandShortName;, it should automatically clear all:">
+# LOCALIZATION NOTE (searchHeader): this is displayed at the top of the panel
+# showing search suggestions.
+# %S is replaced with the name of the current default search engine.
+searchHeader=%S Search
 
-<!-- XXX rearrange entities to match physical layout when l10n isn't an issue -->
-<!-- LOCALIZATION NOTE (clearTimeDuration.*): "Time range to clear" dropdown.
-     See UI mockup at bug 480169 -->
-<!ENTITY clearTimeDuration.label          "Time range to clear: ">
-<!ENTITY clearTimeDuration.accesskey      "T">
-<!ENTITY clearTimeDuration.lastHour       "Last Hour">
-<!ENTITY clearTimeDuration.last2Hours     "Last Two Hours">
-<!ENTITY clearTimeDuration.last4Hours     "Last Four Hours">
-<!ENTITY clearTimeDuration.today          "Today">
-<!ENTITY clearTimeDuration.everything     "Everything">
-<!-- Localization note (clearTimeDuration.suffix) - trailing entity for languages
-that require it.  -->
-<!ENTITY clearTimeDuration.suffix         "">
-<!ENTITY clearTimeDuration.dateColumn     "Visit Date">
-<!ENTITY clearTimeDuration.nameColumn     "Name">
+# LOCALIZATION NOTE (cmd_pasteAndSearch): "Search" is a verb, this is the
+# search bar equivalent to the url bar's "Paste & Go"
+cmd_pasteAndSearch=Paste & Search
 
-<!-- LOCALIZATION NOTE (detailsProgressiveDisclosure.*): Labels and accesskeys
-     of the "Details" progressive disclosure button.  See UI mockup at bug
-     480169 -->
-<!ENTITY detailsProgressiveDisclosure.label     "Details">
-<!ENTITY detailsProgressiveDisclosure.accesskey "e">
+cmd_clearHistory=Clear Search History
+cmd_clearHistory_accesskey=H
 
-<!ENTITY historySection.label         "History">
-<!ENTITY dataSection.label            "Data">
+cmd_showSuggestions=Show Suggestions
+cmd_showSuggestions_accesskey=S
 
-<!ENTITY itemHistoryAndDownloads.label     "Browsing &amp; Download History">
-<!ENTITY itemHistoryAndDownloads.accesskey "B">
-<!ENTITY itemFormSearchHistory.label       "Form &amp; Search History">
-<!ENTITY itemFormSearchHistory.accesskey   "F">
-<!ENTITY itemCookies.label                 "Cookies">
-<!ENTITY itemCookies.accesskey             "C">
-<!ENTITY itemCache.label                   "Cache">
-<!ENTITY itemCache.accesskey               "A">
-<!ENTITY itemOfflineApps.label             "Offline Website Data">
-<!ENTITY itemOfflineApps.accesskey         "O">
-<!ENTITY itemActiveLogins.label            "Active Logins">
-<!ENTITY itemActiveLogins.accesskey        "L">
-<!ENTITY itemSitePreferences.label         "Site Preferences">
-<!ENTITY itemSitePreferences.accesskey     "S">
+# LOCALIZATION NOTE (cmd_addFoundEngine): %S is replaced by the name of
+# a search engine offered by a web page. Each engine is displayed as a
+# menuitem at the bottom of the search panel.
+cmd_addFoundEngine=Add “%S”
+# LOCALIZATION NOTE (cmd_addFoundEngineMenu): When more than 5 engines
+# are offered by a web page, instead of listing all of them in the
+# search panel using the cmd_addFoundEngine string, they will be
+# grouped in a submenu using cmd_addFoundEngineMenu as a label.
+cmd_addFoundEngineMenu=Add search engine
 
-<!-- LOCALIZATION NOTE (sanitizeEverythingUndoWarning): Second warning paragraph
-     that appears when "Time range to clear" is set to "Everything".  See UI
-     mockup at bug 480169 -->
-<!ENTITY sanitizeEverythingUndoWarning     "This action cannot be undone.">
+# LOCALIZATION NOTE (searchForSomethingWith):
+# This string is used to build the header above the list of one-click
+# search providers:  "Search for <user-typed string> with:"
+# NB: please leave the <span> and its class exactly as it is in English.
+searchForSomethingWith=Search for <span class\='contentSearchSearchWithHeaderSearchText'></span> with\:
+
+# LOCALIZATION NOTE (searchWithHeader):
+# The wording of this string should be as close as possible to
+# searchForSomethingWith. This string will be used when the user
+# has not typed anything.
+searchWithHeader=Search with\:
+
+# LOCALIZATION NOTE (searchSettings):
+# This is the label for the button that opens Search preferences.
+searchSettings=Change Search Settings
