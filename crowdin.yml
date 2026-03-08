@@ -1,4 +1,4 @@
 files:
-  - source: /leafsheep/locales/en-US
-    translation: /leafsheep/locales/%locale%
+  - source: /leafsheep/locales/en-US/firefox-l10n.js
+    translation: /leafsheep/locales/%locale%/firefox-l10n.js
     multilingual: 1
