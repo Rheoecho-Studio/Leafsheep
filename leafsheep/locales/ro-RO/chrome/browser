@@ -2,51 +2,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-linkTitleTextFormat=Go to %S
-addHandler=Add “%S” (%S) as a Feed Reader?
-addHandlerAddButton=Add Feed Reader
-addHandlerAddButtonAccesskey=A
-handlerRegistered=“%S” is already registered as a Feed Reader
-liveBookmarks=Live Bookmarks
-subscribeNow=Subscribe Now
-chooseApplicationMenuItem=Choose Application…
-chooseApplicationDialogTitle=Choose Application
-alwaysUse=Always use %S to subscribe to feeds
-mediaLabel=Media files
+lightweightThemes.recommended-1.name=A Web Browser Renaissance
+lightweightThemes.recommended-1.description=A Web Browser Renaissance is (C) Sean.Martell. Available under CC-BY-SA. No warranty.
 
-# LOCALIZATION NOTE: The next string is for the size of the enclosed media.
-#   e.g. enclosureSizeText : "50.23 MB"
-#   %1$S = size (in bytes or megabytes, ...)
-#   %2$S = unit of measure (bytes, KB, MB, ...)
-enclosureSizeText=%1$S %2$S
+lightweightThemes.recommended-2.name=Space Fantasy
+lightweightThemes.recommended-2.description=Space Fantasy is (C) fx5800p. Available under CC-BY-SA. No warranty.
 
-bytes=bytes
-kilobyte=KB
-megabyte=MB
-gigabyte=GB
+lightweightThemes.recommended-3.name=Linen Light
+lightweightThemes.recommended-3.description=Linen Light is (C) DVemer. Available under CC-BY-SA. No warranty.
 
-# LOCALIZATION NOTE: The next three strings explains to the user what they're
-# doing.
-#   e.g. alwaysUseForVideoPodcasts : "Always use Miro to subscribe to video podcasts."
-#   %S = application to use (Miro, iTunes, ...)
-alwaysUseForFeeds=Always use %S to subscribe to feeds.
-alwaysUseForAudioPodcasts=Always use %S to subscribe to podcasts.
-alwaysUseForVideoPodcasts=Always use %S to subscribe to video podcasts.
+lightweightThemes.recommended-4.name=Pastel Gradient
+lightweightThemes.recommended-4.description=Pastel Gradient is (C) darrinhenein. Available under CC-BY. No warranty.
 
-subscribeFeedUsing=Subscribe to this feed using 
-subscribeAudioPodcastUsing=Subscribe to this podcast using 
-subscribeVideoPodcastUsing=Subscribe to this video podcast using 
-
-feedSubscriptionFeed1=This is a “feed” of frequently changing content on this site.
-feedSubscriptionAudioPodcast1=This is a “podcast” of frequently changing content on this site.
-feedSubscriptionVideoPodcast1=This is a “video podcast” of frequently changing content on this site.
-
-feedSubscriptionFeed2=You can subscribe to this feed to receive updates when this content changes.
-feedSubscriptionAudioPodcast2=You can subscribe to this podcast to receive updates when this content changes.
-feedSubscriptionVideoPodcast2=You can subscribe to this video podcast to receive updates when this content changes.
-
-# Protocol Handling
-# "Add %appName (%appDomain) as an application for %protocolType links?"
-addProtocolHandler=Add %S (%S) as an application for %S links?
-addProtocolHandlerAddButton=Add Application
-addProtocolHandlerAddButtonAccesskey=A
+lightweightThemes.recommended-5.name=Carbon Light
+lightweightThemes.recommended-5.description=Carbon Light is (C) Jaxivo. Available under CC-BY-SA. No warranty.
