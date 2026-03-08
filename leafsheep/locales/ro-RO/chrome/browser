@@ -1,37 +1,18 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-#LOCALIZATION NOTE (change.password.title): This (and associated change.password/passphrase) are used when the user elects to change their password.
-change.password.title = Change your Password
-change.password.acceptButton = Change Password
-change.password.status.active = Changing your password…
-change.password.status.success = Your password has been changed.
-change.password.status.error = There was an error changing your password.
-
-change.password3.introText = Your password must be at least 8 characters long.  It cannot be the same as either your user name or your Recovery Key.
-change.password.warningText = Note\: All of your other devices will be unable to connect to your account once you change this password.
-
-change.recoverykey.title = My Recovery Key
-change.recoverykey.acceptButton = Change Recovery Key
-change.recoverykey.label = Changing Recovery Key and uploading local data, please wait…
-change.recoverykey.error = There was an error while changing your Recovery Key\!
-change.recoverykey.success = Your Recovery Key was successfully changed\!
-
-change.synckey.introText2 = To ensure your total privacy, all of your data is encrypted prior to being uploaded. The key to decrypt your data is not uploaded.
-# LOCALIZATION NOTE (change.recoverykey.warningText) "Sync" should match &syncBrand.shortName.label; from syncBrand.dtd
-change.recoverykey.warningText = Note\: Changing this will erase all data stored on the Sync server and upload new data secured by this Recovery Key. Your other devices will not sync until the new Recovery Key is entered for that device.
-
-new.recoverykey.label = Your Recovery Key
-
-# LOCALIZATION NOTE (new.password.title): This (and associated new.password/passphrase) are used on a second computer when it detects that your password or passphrase has been changed on a different device.
-new.password.title            = Update Password
-new.password.introText        = Your password was rejected by the server, please update your password.
-new.password.label            = Enter your new password
-new.password.confirm          = Confirm your new password
-new.password.acceptButton     = Update Password
-new.password.status.incorrect = Password incorrect, please try again.
-
-new.recoverykey.title          = Update Recovery Key
-new.recoverykey.introText      = Your Recovery Key was changed using another device, please enter your updated Recovery Key.
-new.recoverykey.acceptButton     = Update Recovery Key
+<!ENTITY syncKey.page.title               "Your &syncBrand.fullName.label; Key">
+<!ENTITY syncKey.page.description2        "This key is used to decode the data in your &syncBrand.fullName.label; account. You will need to enter the key each time you configure &syncBrand.fullName.label; on a new device.">
+<!ENTITY syncKey.keepItSecret.heading     "Keep it secret">
+<!ENTITY syncKey.keepItSecret.description "Your &syncBrand.fullName.label; account is encrypted to protect your privacy. Without this key, it would take years for anyone to decode your personal information. You are the only person who holds this key. This means you're the only one who can access your &syncBrand.fullName.label; data.">
+<!ENTITY syncKey.keepItSafe.heading       "Keep it safe">
+<!ENTITY syncKey.keepItSafe1.description  "Do not lose this key.">
+<!ENTITY syncKey.keepItSafe2.description  " We don't keep a copy of your key (that wouldn't be keeping it secret!) so ">
+<!ENTITY syncKey.keepItSafe3.description  "we can't help you recover it">
+<!ENTITY syncKey.keepItSafe4a.description " if it's lost. You'll need to use this key any time you connect a new device to &syncBrand.fullName.label;.">
+<!ENTITY syncKey.findOutMore1.label       "Find out more about &syncBrand.fullName.label; and your privacy at ">
+<!ENTITY syncKey.findOutMore2.label       ".">
+<!ENTITY syncKey.footer1.label            "&syncBrand.fullName.label; Terms of Service are available at ">
+<!ENTITY syncKey.footer2.label            ". The Privacy Policy is available at ">
+<!ENTITY syncKey.footer3.label            ".">
