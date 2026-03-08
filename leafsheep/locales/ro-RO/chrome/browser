@@ -2,29 +2,50 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<!ENTITY searchreset.tabtitle       "Restore Search Settings">
+<!ENTITY restorepage.tabtitle       "Restore Session">
 
-<!ENTITY searchreset.pageTitle      "Restore your search settings?">
+<!-- LOCALIZATION NOTE: The title is intended to be apologetic and disarming, expressing dismay
+     and regret that we are unable to restore the session for the user -->
+<!ENTITY restorepage.errorTitle     "Well, this is embarrassing.">
+<!ENTITY restorepage.problemDesc    "&brandShortName; is having trouble recovering your windows and tabs. This is usually caused by a recently opened web page.">
+<!ENTITY restorepage.tryThis        "You can try:">
+<!ENTITY restorepage.restoreSome    "Removing one or more tabs that you think may be causing the problem">
+<!ENTITY restorepage.startNew       "Starting an entirely new browsing session">
 
-<!ENTITY searchreset.pageInfo1      "Your search settings might be out-of-date. &brandShortName; can help you restore the default search settings.">
+<!ENTITY restorepage.tryagainButton "Restore">
+<!ENTITY restorepage.restore.access "R">
+<!ENTITY restorepage.closeButton    "Close">
+<!ENTITY restorepage.close.access   "C">
+
+<!ENTITY restorepage.restoreHeader  "Restore">
+<!ENTITY restorepage.listHeader     "Windows and Tabs">
+<!-- LOCALIZATION NOTE: &#37;S will be replaced with a number. -->
+<!ENTITY restorepage.windowLabel    "Window %S">
 
 
-<!-- LOCALIZATION NOTE (searchreset.selector.label): this string is
-followed by a dropdown of all the built-in search engines. -->
-<!ENTITY searchreset.selector.label "This will set your default search engine to">
+<!-- LOCALIZATION NOTE: The following 'welcomeback2' strings are for about:welcomeback,
+     not for about:sessionstore -->
 
-<!-- LOCALIZATION NOTE (searchreset.beforelink.pageInfo,
-searchreset.afterlink.pageInfo): these two string are used respectively
-before and after the "Settings page" link (searchreset.link.pageInfo2).
+<!ENTITY welcomeback2.restoreButton  "Let’s go!">
+<!ENTITY welcomeback2.restoreButton.access "L">
+
+<!ENTITY welcomeback2.tabtitle      "Success!">
+
+<!ENTITY welcomeback2.pageTitle     "Success!">
+<!ENTITY welcomeback2.pageInfo1     "&brandShortName; is ready to go.">
+
+<!ENTITY welcomeback2.label.restoreAll  "Restore all Windows and Tabs">
+<!ENTITY welcomeback2.label.restoreSome "Restore only the ones you want">
+
+
+<!-- LOCALIZATION NOTE (welcomeback2.beforelink.pageInfo2,
+welcomeback2.afterlink.pageInfo2): these two string are used respectively
+before and after the the "learn more" link (welcomeback2.link.pageInfo2).
 Localizers can use one of them, or both, to better adapt this sentence to
-their language. -->
-<!ENTITY searchreset.beforelink.pageInfo2 "You can change these settings at any time from the ">
-<!ENTITY searchreset.afterlink.pageInfo2  ".">
+their language.
+-->
+<!ENTITY welcomeback2.beforelink.pageInfo2  "Your add-ons and customizations have been removed and your browser settings have been restored to their defaults. If this didn’t fix your issue, ">
+<!ENTITY welcomeback2.afterlink.pageInfo2   "">
 
-<!ENTITY searchreset.link.pageInfo2       "Settings page">
+<!ENTITY welcomeback2.link.pageInfo2        "learn more about what you can do.">
 
-<!ENTITY searchreset.noChangeButton        "Don’t Change">
-<!ENTITY searchreset.noChangeButton.access "D">
-
-<!ENTITY searchreset.changeEngineButton        "Change Search Engine">
-<!ENTITY searchreset.changeEngineButton.access "C">
