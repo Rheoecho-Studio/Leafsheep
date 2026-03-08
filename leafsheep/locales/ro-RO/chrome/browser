@@ -1,14 +1,14 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-# LOCALIZATION NOTE
-# in descriptionApplications, %S will be replaced by one of the 3 following strings
-descriptionApplications=The following applications can be used to handle %S.
+<!ENTITY  typeColumn.label        "Content Type">
+<!ENTITY  typeColumn.accesskey    "T">
 
-handleProtocol=%S links
-handleWebFeeds=Web Feeds
-handleFile=%S content
+<!ENTITY  actionColumn2.label     "Action">
+<!ENTITY  actionColumn2.accesskey "A">
 
-descriptionWebApp=This web application is hosted at\:
-descriptionLocalApp=This application is located at\:
+<!ENTITY  focusSearch1.key        "f">
+<!ENTITY  focusSearch2.key        "k">
+
+<!ENTITY  filter.emptytext        "Search">
