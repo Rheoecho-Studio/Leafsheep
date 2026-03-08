@@ -2,25 +2,51 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<!ENTITY containers.dialog.title "Manage Containers">
-<!ENTITY containers.dialog.description "Create and edit containers for separate browsing sessions.">
-<!ENTITY containers.list.label "Containers">
-<!ENTITY containers.details.label "Container Details">
+<!ENTITY  popups.label                "Pop-ups">
 
-<!ENTITY containers.addButton.label "New Container">
-<!ENTITY containers.addButton.accesskey "A">
-<!ENTITY containers.removeButton.label "Remove">
-<!ENTITY containers.removeButton.accesskey "R">
-<!ENTITY containers.saveButton.label "Save">
-<!ENTITY containers.saveButton.accesskey "S">
-<!ENTITY containers.closeButton.label "Close">
-<!ENTITY containers.closeButton.accesskey "L">
+<!ENTITY  blockPopups.label           "Block pop-up windows">
+<!ENTITY  blockPopups.accesskey       "B">
 
-<!ENTITY containers.name.label "Name:">
-<!ENTITY containers.name.accesskey "N">
-<!ENTITY containers.icon.label "Icon:">
-<!ENTITY containers.icon.accesskey "I">
-<!ENTITY containers.color.label "Color:">
-<!ENTITY containers.color.accesskey "C">
+<!ENTITY  notificationsPolicy.label            "Notifications">
+<!ENTITY  notificationsPolicyLearnMore.label   "Learn more">
+<!ENTITY  notificationsPolicyDesc3.label       "Choose which sites are allowed to send you notifications">
+<!ENTITY  notificationsPolicyButton.accesskey  "h">
+<!ENTITY  notificationsPolicyButton.label      "Choose…">
+<!ENTITY  notificationsDoNotDisturb.label      "Do not disturb me">
+<!ENTITY  notificationsDoNotDisturb.accesskey  "n">
+<!ENTITY  notificationsDoNotDisturbDetails.value "No notification will be shown until you restart &brandShortName;">
 
-<!ENTITY window.width "46em">
+<!ENTITY  popupExceptions.label       "Exceptions…">
+<!ENTITY  popupExceptions.accesskey   "E">
+
+<!ENTITY  fontsAndColors.label        "Fonts &amp; Colors">
+
+<!ENTITY  defaultFont.label           "Default font:">
+<!ENTITY  defaultFont.accesskey       "D">
+<!ENTITY  defaultSize.label           "Size:">
+<!ENTITY  defaultSize.accesskey       "S">
+
+<!ENTITY  advancedFonts.label         "Advanced…">
+<!ENTITY  advancedFonts.accesskey     "A">
+
+<!ENTITY  colors.label                "Colors…">
+<!ENTITY  colors.accesskey            "C">
+
+
+<!ENTITY languages.label              "Languages">
+<!ENTITY chooseLanguage.label         "Choose your preferred language for displaying pages">
+<!ENTITY chooseButton.label           "Choose…">
+<!ENTITY chooseButton.accesskey       "o">
+
+<!ENTITY  javascript.label            "JavaScript">
+
+<!ENTITY  javascriptWasm.label           "Enable WebAssembly (WASM)">
+<!ENTITY  javascriptWasm.accesskey       "y">
+<!ENTITY  javascriptServiceWorkers.label      "Enable Service Workers">
+<!ENTITY  javascriptServiceWorkers.accesskey  "S">
+<!ENTITY  javascriptInternalUserscripts.label      "Enable internal user scripts (polyfills)">
+<!ENTITY  javascriptInternalUserscripts.accesskey  "I">
+#ifdef MOZ_WEBRTC
+<!ENTITY  javascriptWebrtc.label           "Enable WebRTC">
+<!ENTITY  javascriptWebrtc.accesskey       "R">
+#endif
