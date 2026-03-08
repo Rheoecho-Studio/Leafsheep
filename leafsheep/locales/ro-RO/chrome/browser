@@ -2,31 +2,42 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<!ENTITY defaultSearchEngine.label             "Default Search Engine">
+<!ENTITY  general.label                 "General">
 
-<!ENTITY chooseYourDefaultSearchEngine.label   "Choose your default search engine. &brandShortName; uses it in the location bar, search bar, and start page.">
+<!ENTITY  warnAddonInstall.label        "Warn me when sites try to install add-ons">
+<!ENTITY  warnAddonInstall.accesskey    "W">
 
-<!ENTITY provideSearchSuggestions.label        "Provide search suggestions">
-<!ENTITY provideSearchSuggestions.accesskey    "s">
+<!-- LOCALIZATION NOTE (enableSafeBrowsing.label, blockDownloads.label, blockUncommonUnwanted.label):
+  It is important that wording follows the guidelines outlined on this page:
+  https://developers.google.com/safe-browsing/developers_guide_v2#AcceptableUsage
+-->
+<!ENTITY  enableSafeBrowsing.label        "Block dangerous and deceptive content">
+<!ENTITY  enableSafeBrowsing.accesskey    "B">
 
-<!ENTITY showURLBarSuggestions.label           "Show search suggestions in location bar results">
-<!ENTITY showURLBarSuggestions.accesskey       "l">
-<!ENTITY urlBarSuggestionsPermanentPB.label    "Search suggestions will not be shown in location bar results because you have configured &brandShortName; to never remember history.">
+<!ENTITY  blockDownloads.label            "Block dangerous downloads">
+<!ENTITY  blockDownloads.accesskey        "D">
 
-<!ENTITY redirectWindowsSearch.label "Use this search engine for searches from Windows">
-<!ENTITY redirectWindowsSearch.accesskey "W">
+<!ENTITY  blockUncommonUnwanted.label     "Warn me about unwanted and uncommon software">
+<!ENTITY  blockUncommonUnwanted.accesskey "C">
 
-<!ENTITY oneClickSearchEngines.label           "One-click search engines">
+<!ENTITY  addonExceptions.label         "Exceptions…">
+<!ENTITY  addonExceptions.accesskey     "E">
 
-<!ENTITY chooseWhichOneToDisplay.label         "The search bar lets you search alternate engines directly. Choose which ones to display.">
 
-<!ENTITY engineNameColumn.label                "Search Engine">
-<!ENTITY engineKeywordColumn.label             "Keyword">
+<!ENTITY  logins.label                  "Logins">
 
-<!ENTITY restoreDefaultSearchEngines.label     "Restore Default Search Engines">
-<!ENTITY restoreDefaultSearchEngines.accesskey "d">
+<!ENTITY  rememberLogins.label          "Remember logins for sites">
+<!ENTITY  rememberLogins.accesskey      "R">
+<!ENTITY  passwordExceptions.label      "Exceptions…">
+<!ENTITY  passwordExceptions.accesskey  "x">
 
-<!ENTITY removeEngine.label                    "Remove">
-<!ENTITY removeEngine.accesskey                "r">
+<!ENTITY  autofillPasswords.label       "Automatically fill in log-in details">
+<!ENTITY  autofillPasswords.accesskey   "A">
 
-<!ENTITY addMoreSearchEngines.label            "Add more search engines…">
+<!ENTITY  useMasterPassword.label        "Use a master password">
+<!ENTITY  useMasterPassword.accesskey    "U">
+<!ENTITY  changeMasterPassword.label     "Change Master Password…">
+<!ENTITY  changeMasterPassword.accesskey "M">
+
+<!ENTITY  savedLogins.label              "Saved Logins…">
+<!ENTITY  savedLogins.accesskey          "L">
