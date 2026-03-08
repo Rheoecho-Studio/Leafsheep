@@ -1,0 +1,4 @@
+files:
+  - source: /leafsheep/locales/en-US
+    translation: /leafsheep/locales/%locale%
+    multilingual: 1
