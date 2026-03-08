@@ -1,92 +1,116 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-load-js-data-url-error=For security reasons, javascript or data urls cannot be loaded from the history window or sidebar.
-noTitle=(no title)
+<!-- Note: each tab panel must contain unique accesskeys -->
 
-bookmarksMenuEmptyFolder=(Empty)
+<!ENTITY generalTab.label                "General">
 
-bookmarksBackupTitle=Bookmarks backup filename
+<!ENTITY accessibility.label             "Accessibility">
 
-bookmarksRestoreAlertTitle=Revert Bookmarks
-bookmarksRestoreAlert=This will replace all of your current bookmarks with the backup. Are you sure?
-bookmarksRestoreTitle=Select a bookmarks backup
-bookmarksRestoreFilterName=JSON
+<!ENTITY useCursorNavigation.label       "Always use the cursor keys to navigate within pages">
+<!ENTITY useCursorNavigation.accesskey   "c">
+<!ENTITY searchStartTyping.label         "Search for text when I start typing">
+<!ENTITY searchStartTyping.accesskey     "x">
+<!ENTITY reduceMotion.label              "Prefer reduced visual motion">
+<!ENTITY reduceMotion.accesskey          "v">
+<!ENTITY blockAutoRefresh.label          "Warn me when websites try to redirect or reload the page">
+<!ENTITY blockAutoRefresh.accesskey      "b">
+<!ENTITY useOnScreenKeyboard.label       "Show a touch keyboard when necessary">
+<!ENTITY useOnScreenKeyboard.accesskey   "k">
 
-bookmarksRestoreFormatError=Unsupported file type.
-bookmarksRestoreParseError=Unable to process the backup file.
+<!ENTITY browsing.label                  "Browsing">
 
-bookmarksLivemarkLoading=Live Bookmark loading…
-bookmarksLivemarkFailed=Live Bookmark feed failed to load.
+<!ENTITY useAutoScroll.label             "Use autoscrolling">
+<!ENTITY useAutoScroll.accesskey         "a">
+<!ENTITY useSmoothScrolling.label        "Use smooth scrolling">
+<!ENTITY useSmoothScrolling.accesskey    "m">
+<!ENTITY allowHWAccel.label              "Use hardware acceleration when available">
+<!ENTITY allowHWAccel.accesskey          "r">
+<!ENTITY checkSpelling.label             "Check my spelling as I type">
+<!ENTITY checkSpelling.accesskey         "t">
 
-menuOpenLivemarkOrigin.label=Open “%S”
+<!ENTITY dataChoicesTab.label            "Data Choices">
 
-sortByName=Sort ‘%S’ by Name
-sortByNameGeneric=Sort by Name
-# LOCALIZATION NOTE (view.sortBy.1.name.label): sortBy properties are versioned.
-# When any of these changes, all of the properties must be bumped, and the
-# change must be annotated here.  Both label and accesskey must be updated.
-# - version 1: changed view.sortBy.1.date.
-view.sortBy.1.name.label=Sort by Name
-view.sortBy.1.name.accesskey=N
-view.sortBy.1.url.label=Sort by Location
-view.sortBy.1.url.accesskey=L
-view.sortBy.1.date.label=Sort by Most Recent Visit
-view.sortBy.1.date.accesskey=V
-view.sortBy.1.visitCount.label=Sort by Visit Count
-view.sortBy.1.visitCount.accesskey=C
-view.sortBy.1.description.label=Sort by Description
-view.sortBy.1.description.accesskey=D
-view.sortBy.1.dateAdded.label=Sort by Added
-view.sortBy.1.dateAdded.accesskey=e
-view.sortBy.1.lastModified.label=Sort by Last Modified
-view.sortBy.1.lastModified.accesskey=M
-view.sortBy.1.tags.label=Sort by Tags
-view.sortBy.1.tags.accesskey=T
+<!ENTITY crashReporterDesc2.label         "Crash reports help &vendorShortName; fix problems and make your browser more stable and secure">
+<!ENTITY alwaysSubmitCrashReports.label   "Allow &brandShortName; to send backlogged crash reports on your behalf">
+<!ENTITY alwaysSubmitCrashReports.accesskey "c">
 
-searchBookmarks=Search Bookmarks
-searchHistory=Search History
-searchDownloads=Search Downloads
+<!ENTITY networkTab.label                "Network">
 
-tabs.openWarningTitle=Confirm open
-tabs.openWarningMultipleBranded=You are about to open %S tabs.  This might slow down %S while the pages are loading.  Are you sure you want to continue?
-tabs.openButtonMultiple=Open tabs
-tabs.openWarningPromptMeBranded=Warn me when opening multiple tabs might slow down %S
+<!ENTITY connection.label                "Connection">
 
-SelectImport=Import Bookmarks File
-EnterExport=Export Bookmarks File
+<!ENTITY connectionDesc.label            "Configure how &brandShortName; connects to the Internet">
+<!ENTITY connectionSettings.label        "Settings…">
+<!ENTITY connectionSettings.accesskey    "e">
 
-detailsPane.noItems=No items
-# LOCALIZATION NOTE (detailsPane.itemsCountLabel): Semicolon-separated list of plural forms.
-# See: http://developer.mozilla.org/en/docs/Localization_and_Plurals
-# #1 number of items
-# example: 111 items
-detailsPane.itemsCountLabel=One item;\#1 items
+<!ENTITY DNS.label                       "DNS">
+<!ENTITY enableDNSPrefetch.label         "Prefetch DNS lookups">
+<!ENTITY enableDNSPrefetch.accesskey     "P">
 
-mostVisitedTitle=Most Visited
-recentTagsTitle=Recent Tags
+<!ENTITY cacheTab.label                  "Cache">
 
-OrganizerQueryHistory=History
-OrganizerQueryDownloads=Downloads
-OrganizerQueryAllBookmarks=All Bookmarks
-OrganizerQueryTags=Tags
+<!ENTITY httpCache.label                 "Cached Web Content">
 
-# LOCALIZATION NOTE (tagResultLabel, bookmarkResultLabel, switchtabResultLabel,
-# keywordResultLabel, searchengineResultLabel)
-# Noun used to describe the location bar autocomplete result type
-# to users with screen readers
-# See createResultLabel() in urlbarBindings.xml
-tagResultLabel=Tag
-bookmarkResultLabel=Bookmark
-switchtabResultLabel=Tab
-keywordResultLabel=Keyword
-searchengineResultLabel=Search
+<!ENTITY offlineStorage2.label           "Offline Web Content and User Data">
 
+<!-- LOCALIZATION NOTE:
+  The entities limitCacheSizeBefore.label and limitCacheSizeAfter.label appear on a single
+  line in preferences as follows:
 
-# LOCALIZATION NOTE (lockPrompt.text)
-# %S will be replaced with the application name.
-lockPrompt.title=Browser Startup Error
-lockPrompt.text=The bookmarks and history system will not be functional because one of %S’s files is in use by another application. Some security software can cause this problem.
-lockPromptInfoButton.label=Learn More
-lockPromptInfoButton.accessKey=L
+  &limitCacheSizeBefore.label [textbox for cache size in MB] &limitCacheSizeAfter.label;
+-->
+<!ENTITY limitCacheSizeBefore.label      "Limit cache to">
+<!ENTITY limitCacheSizeBefore.accesskey  "L">
+<!ENTITY limitCacheSizeAfter.label       "MB of space">
+<!ENTITY clearCacheNow.label             "Clear Now">
+<!ENTITY clearCacheNow.accesskey         "C">
+<!ENTITY clearOfflineAppCacheNow.label   "Clear Now">
+<!ENTITY clearOfflineAppCacheNow.accesskey "N">
+<!ENTITY overrideSmartCacheSize.label    "Override automatic cache management">
+<!ENTITY overrideSmartCacheSize.accesskey "O">
+
+<!ENTITY updateTab.label                 "Update">
+
+<!ENTITY updateApp.label                 "&brandShortName; updates:">
+<!ENTITY updateAuto1.label               "Automatically install updates (recommended: improved security)">
+<!ENTITY updateAuto1.accesskey           "A">
+<!ENTITY updateCheck.label               "Check for updates, but let me choose whether to install them">
+<!ENTITY updateCheck.accesskey           "C">
+<!ENTITY updateManual.label              "Never check for updates (not recommended: security risk)">
+<!ENTITY updateManual.accesskey          "N">
+
+<!ENTITY updateHistory.label             "Show Update History">
+<!ENTITY updateHistory.accesskey         "p">
+
+<!ENTITY useService.label                "Use a background service to install updates">
+<!ENTITY useService.accesskey            "b">
+
+<!ENTITY updateOthers.label              "Automatically update:">
+<!ENTITY enableSearchUpdate.label        "Search Engines">
+<!ENTITY enableSearchUpdate.accesskey    "E">
+
+<!ENTITY offlineNotify.label             "Tell me when a website asks to store data for offline use">
+<!ENTITY offlineNotify.accesskey         "T">
+<!ENTITY offlineNotifyExceptions.label   "Exceptions…">
+<!ENTITY offlineNotifyExceptions.accesskey "x">
+
+<!ENTITY offlineAppsList2.label          "The following websites are allowed to store data for offline use:">
+<!ENTITY offlineAppsList.height          "7em">
+<!ENTITY offlineAppsListRemove.label     "Remove…">
+<!ENTITY offlineAppsListRemove.accesskey "R">
+<!ENTITY offlineAppRemove.confirm        "Remove offline data">
+
+<!ENTITY certificateTab.label            "Certificates">
+<!ENTITY certSelection.label             "Requests">
+<!ENTITY certSelection.description       "When a server requests my personal certificate:">
+<!ENTITY certs.auto                      "Select one automatically">
+<!ENTITY certs.auto.accesskey            "S">
+<!ENTITY certs.ask                       "Ask me every time">
+<!ENTITY certs.ask.accesskey             "A">
+<!ENTITY enableOCSP.label                "Query OCSP responder servers to confirm the current validity of certificates">
+<!ENTITY enableOCSP.accesskey            "Q">
+<!ENTITY viewCerts.label                 "View Certificates">
+<!ENTITY viewCerts.accesskey             "C">
+<!ENTITY viewSecurityDevices.label       "Security Devices">
+<!ENTITY viewSecurityDevices.accesskey   "D">
