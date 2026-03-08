@@ -1,124 +1,92 @@
-<!-- This Source Code Form is subject to the terms of the Mozilla Public
-   - License, v. 2.0. If a copy of the MPL was not distributed with this
-   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-<!-- LOCALIZATION NOTE (places.library.title): use "Library", "Archive" or "Repository" -->
-<!ENTITY places.library.title  "Library">
-<!ENTITY places.library.width  "700">
-<!ENTITY places.library.height "500">
-<!ENTITY organize.label        "Organize">
-<!ENTITY organize.accesskey    "O">
-<!ENTITY organize.tooltip      "Organize your bookmarks">
+load-js-data-url-error=For security reasons, javascript or data urls cannot be loaded from the history window or sidebar.
+noTitle=(no title)
 
-<!ENTITY file.close.label               "Close">
-<!ENTITY file.close.accesskey           "C">
-<!ENTITY cmd.close.key                  "w">
-<!ENTITY views.label                    "Views">
-<!ENTITY views.accesskey                "V">
-<!ENTITY views.tooltip                  "Change your view">
-<!ENTITY view.columns.label             "Show Columns">
-<!ENTITY view.columns.accesskey         "C">
-<!ENTITY view.sort.label                "Sort">
-<!ENTITY view.sort.accesskey            "S">
-<!ENTITY view.unsorted.label            "Unsorted">
-<!ENTITY view.unsorted.accesskey        "U">
-<!ENTITY view.sortAscending.label       "A &gt; Z Sort Order">
-<!ENTITY view.sortAscending.accesskey   "A">
-<!ENTITY view.sortDescending.label      "Z &gt; A Sort Order">
-<!ENTITY view.sortDescending.accesskey  "Z">
+bookmarksMenuEmptyFolder=(Empty)
 
-<!ENTITY importBookmarksFromHTML.label     "Import Bookmarks from HTML…">
-<!ENTITY importBookmarksFromHTML.accesskey "I">
-<!ENTITY exportBookmarksToHTML.label       "Export Bookmarks to HTML…">
-<!ENTITY exportBookmarksToHTML.accesskey   "E">
-<!ENTITY importOtherBrowser.label          "Import Data from Another Browser…">
-<!ENTITY importOtherBrowser.accesskey      "A">
+bookmarksBackupTitle=Bookmarks backup filename
 
-<!ENTITY cmd.backup.label               "Backup…">
-<!ENTITY cmd.backup.accesskey           "B">
-<!ENTITY cmd.restore2.label             "Restore">
-<!ENTITY cmd.restore2.accesskey         "R">
-<!ENTITY cmd.restoreFromFile.label      "Choose File…">
-<!ENTITY cmd.restoreFromFile.accesskey  "C">
+bookmarksRestoreAlertTitle=Revert Bookmarks
+bookmarksRestoreAlert=This will replace all of your current bookmarks with the backup. Are you sure?
+bookmarksRestoreTitle=Select a bookmarks backup
+bookmarksRestoreFilterName=JSON
 
-<!ENTITY cmd.bookmarkLink.label         "Bookmark This Page…">
-<!ENTITY cmd.bookmarkLink.accesskey     "B">
-<!ENTITY cmd.delete.label               "Delete This Page">
-<!ENTITY cmd.delete.accesskey           "D">
-<!ENTITY cmd.deleteDomainData.label     "Forget About This Site">
-<!ENTITY cmd.deleteDomainData.accesskey "F">
+bookmarksRestoreFormatError=Unsupported file type.
+bookmarksRestoreParseError=Unable to process the backup file.
 
-<!ENTITY cmd.open.label                  "Open">
-<!ENTITY cmd.open.accesskey              "O">
-<!ENTITY cmd.open_window.label           "Open in a New Window">
-<!ENTITY cmd.open_window.accesskey       "N">
-<!ENTITY cmd.open_private_window.label     "Open in a New Private Window">
-<!ENTITY cmd.open_private_window.accesskey "P">
-<!ENTITY cmd.open_tab.label              "Open in a New Tab">
-<!ENTITY cmd.open_tab.accesskey          "w">
-<!ENTITY cmd.open_all_in_tabs.label      "Open All in Tabs">
-<!ENTITY cmd.open_all_in_tabs.accesskey  "O">
+bookmarksLivemarkLoading=Live Bookmark loading…
+bookmarksLivemarkFailed=Live Bookmark feed failed to load.
 
-<!ENTITY cmd.properties.label      "Properties">
-<!ENTITY cmd.properties.accesskey  "i">
+menuOpenLivemarkOrigin.label=Open “%S”
 
-<!ENTITY cmd.sortby_name.label              "Sort By Name">
-<!ENTITY cmd.sortby_name.accesskey          "S">
-<!ENTITY cmd.context_sortby_name.accesskey  "r">
+sortByName=Sort ‘%S’ by Name
+sortByNameGeneric=Sort by Name
+# LOCALIZATION NOTE (view.sortBy.1.name.label): sortBy properties are versioned.
+# When any of these changes, all of the properties must be bumped, and the
+# change must be annotated here.  Both label and accesskey must be updated.
+# - version 1: changed view.sortBy.1.date.
+view.sortBy.1.name.label=Sort by Name
+view.sortBy.1.name.accesskey=N
+view.sortBy.1.url.label=Sort by Location
+view.sortBy.1.url.accesskey=L
+view.sortBy.1.date.label=Sort by Most Recent Visit
+view.sortBy.1.date.accesskey=V
+view.sortBy.1.visitCount.label=Sort by Visit Count
+view.sortBy.1.visitCount.accesskey=C
+view.sortBy.1.description.label=Sort by Description
+view.sortBy.1.description.accesskey=D
+view.sortBy.1.dateAdded.label=Sort by Added
+view.sortBy.1.dateAdded.accesskey=e
+view.sortBy.1.lastModified.label=Sort by Last Modified
+view.sortBy.1.lastModified.accesskey=M
+view.sortBy.1.tags.label=Sort by Tags
+view.sortBy.1.tags.accesskey=T
 
-<!ENTITY cmd.new_bookmark.label            "New Bookmark…">
-<!ENTITY cmd.new_bookmark.accesskey        "B">
-<!ENTITY cmd.new_folder.label              "New Folder…">
-<!ENTITY cmd.new_folder.accesskey          "o">
-<!ENTITY cmd.context_new_folder.accesskey  "F">
-<!ENTITY cmd.new_separator.label           "New Separator">
-<!ENTITY cmd.new_separator.accesskey       "S">
+searchBookmarks=Search Bookmarks
+searchHistory=Search History
+searchDownloads=Search Downloads
 
-<!ENTITY cmd.reloadLivebookmark.label      "Reload Live Bookmark">
-<!ENTITY cmd.reloadLivebookmark.accesskey  "R">
+tabs.openWarningTitle=Confirm open
+tabs.openWarningMultipleBranded=You are about to open %S tabs.  This might slow down %S while the pages are loading.  Are you sure you want to continue?
+tabs.openButtonMultiple=Open tabs
+tabs.openWarningPromptMeBranded=Warn me when opening multiple tabs might slow down %S
 
-<!ENTITY cmd.moveBookmarks.label                  "Move…">
-<!ENTITY cmd.moveBookmarks.accesskey              "M">
+SelectImport=Import Bookmarks File
+EnterExport=Export Bookmarks File
 
-<!ENTITY col.name.label          "Name">
-<!ENTITY col.tags.label          "Tags">
-<!ENTITY col.url.label           "Location">
-<!ENTITY col.mostrecentvisit.label "Most Recent Visit">
-<!ENTITY col.visitcount.label    "Visit Count">
-<!ENTITY col.description.label   "Description">
-<!ENTITY col.dateadded.label     "Added">
-<!ENTITY col.lastmodified.label  "Last Modified">
+detailsPane.noItems=No items
+# LOCALIZATION NOTE (detailsPane.itemsCountLabel): Semicolon-separated list of plural forms.
+# See: http://developer.mozilla.org/en/docs/Localization_and_Plurals
+# #1 number of items
+# example: 111 items
+detailsPane.itemsCountLabel=One item;\#1 items
 
-<!ENTITY search.label                              "Search:">
-<!ENTITY search.accesskey                          "S">
+mostVisitedTitle=Most Visited
+recentTagsTitle=Recent Tags
 
-<!ENTITY cmd.find.key  "f">
+OrganizerQueryHistory=History
+OrganizerQueryDownloads=Downloads
+OrganizerQueryAllBookmarks=All Bookmarks
+OrganizerQueryTags=Tags
 
-<!ENTITY maintenance.label      "Import and Backup">
-<!ENTITY maintenance.accesskey  "I">
-<!ENTITY maintenance.tooltip    "Import and backup your bookmarks">
+# LOCALIZATION NOTE (tagResultLabel, bookmarkResultLabel, switchtabResultLabel,
+# keywordResultLabel, searchengineResultLabel)
+# Noun used to describe the location bar autocomplete result type
+# to users with screen readers
+# See createResultLabel() in urlbarBindings.xml
+tagResultLabel=Tag
+bookmarkResultLabel=Bookmark
+switchtabResultLabel=Tab
+keywordResultLabel=Keyword
+searchengineResultLabel=Search
 
-<!ENTITY backButton.tooltip  "Go back">
 
-<!ENTITY forwardButton.tooltip  "Go forward">
-
-<!ENTITY detailsPane.more.label "More">
-<!ENTITY detailsPane.more.accesskey "e">
-<!ENTITY detailsPane.less.label "Less">
-<!ENTITY detailsPane.less.accesskey "e">
-<!ENTITY detailsPane.selectAnItemText.description "Select an item to view and edit its properties">
-
-<!ENTITY find.label               "Search:">
-<!ENTITY find.accesskey           "S">
-<!ENTITY view.label               "View">
-<!ENTITY view.accesskey           "w">
-<!ENTITY byDate.label             "By Date">
-<!ENTITY byDate.accesskey         "D">
-<!ENTITY bySite.label             "By Site">
-<!ENTITY bySite.accesskey         "S">
-<!ENTITY byMostVisited.label      "By Most Visited">
-<!ENTITY byMostVisited.accesskey  "V">
-<!ENTITY byLastVisited.label      "By Last Visited">
-<!ENTITY byLastVisited.accesskey  "L">
-<!ENTITY byDayAndSite.label       "By Date and Site">
-<!ENTITY byDayAndSite.accesskey   "t">
+# LOCALIZATION NOTE (lockPrompt.text)
+# %S will be replaced with the application name.
+lockPrompt.title=Browser Startup Error
+lockPrompt.text=The bookmarks and history system will not be functional because one of %S’s files is in use by another application. Some security software can cause this problem.
+lockPromptInfoButton.label=Learn More
+lockPromptInfoButton.accessKey=L
