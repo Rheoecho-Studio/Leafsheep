@@ -1,33 +1,15 @@
-# This Source Code Form is subject to the terms of the Mozilla Public
-# License, v. 2.0. If a copy of the MPL was not distributed with this
-# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-profileName_format=%S %S
-
-# Browser Specific
-sourceNameFirefox=Mozilla Firefox
-
-importedBookmarksFolder=From %S
-
-# Import Sources
-# Note: When adding an import source for profile reset, add the string name to
-# resetProfile.js if it should be listed in the reset dialog.
-2_firefox=Cookies
-
-4_firefox_history_and_bookmarks=Browsing History and Bookmarks
-
-8_firefox=Saved Form History
-
-16_firefox=Saved Passwords
-
-64_firefox_other=Other Data
-
-128_firefox=Windows and Tabs
-
-# Automigration undo notification.
-automigration.undo.message               = We automatically imported your data from %S. Would you like to keep it?
-automigration.undo.unknownBrowserMessage = We automatically imported your data from another browser. Would you like to keep it?
-automigration.undo.keep.label            = Keep
-automigration.undo.keep.accesskey        = K
-automigration.undo.dontkeep.label        = Don’t Keep
-automigration.undo.dontkeep.accesskey    = D
+<!-- These strings are used in the about:newtab page -->
+<!ENTITY newtab.pageTitle "New Tab">
+<!ENTITY newtab.customize.classic "Show your top sites">
+<!ENTITY newtab.customize.cog.title2 "NEW TAB CONTROLS">
+<!ENTITY newtab.customize.cog.learn "Learn about New Tab">
+<!ENTITY newtab.customize.title "Customize your New Tab page">
+<!ENTITY newtab.customize.blank2 "Show blank page">
+<!ENTITY newtab.undo.removedLabel "Thumbnail removed.">
+<!ENTITY newtab.undo.undoButton "Undo.">
+<!ENTITY newtab.undo.restoreButton "Restore All.">
+<!ENTITY newtab.undo.closeTooltip "Hide">
