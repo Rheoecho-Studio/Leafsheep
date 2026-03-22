@@ -1,0 +1,16 @@
+manifest chrome/browser.manifest
+manifest chrome/devtools.manifest
+manifest chrome/zh-CN.manifest
+manifest chrome/internaluserscripts.manifest
+manifest chrome/pdfjs.manifest
+manifest components/BrowserComponents.manifest
+manifest components/BrowserFeeds.manifest
+manifest components/BrowserProfileMigrators.manifest
+manifest components/NewTabComponents.manifest
+manifest components/SelfSupportService.manifest
+manifest components/components.manifest
+manifest components/devtools-startup.manifest
+manifest components/interfaces.manifest
+manifest components/internaluserscripts.manifest
+manifest components/nsSessionStore.manifest
+manifest components/nsSetDefaultBrowser.manifest
