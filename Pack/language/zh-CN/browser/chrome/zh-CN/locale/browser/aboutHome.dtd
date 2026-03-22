@@ -1,0 +1,40 @@
+<!-- This Source Code Form is subject to the terms of the Mozilla Public
+   - License, v. 2.0. If a copy of the MPL was not distributed with this
+   - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
+
+<!ENTITY % brandDTD SYSTEM "chrome://branding/locale/brand.dtd">
+%brandDTD;
+<!ENTITY % syncBrandDTD SYSTEM "chrome://browser/locale/syncBrand.dtd">
+%syncBrandDTD;
+
+<!-- These strings are used in the about:home page -->
+
+<!ENTITY abouthome.pageTitle "&brandFullName; 起始页">
+
+<!-- LOCALIZATION NOTE (abouthome.defaultSnippet1.v1):
+     text in <a/> will be linked to the Firefox features page on mozilla.com
+-->
+<!ENTITY abouthome.defaultSnippet1.v1 "感谢您选择 &brandFullName;！要详细了解浏览器的最新功能，请<a>查看新特性</a>。">
+<!-- LOCALIZATION NOTE (abouthome.defaultSnippet2.v1):
+     text in <a/> will be linked to the featured add-ons on addons.mozilla.org
+-->
+<!ENTITY abouthome.defaultSnippet2.v1 "根据您的需要自定义 &brandFullName;非常简单。<a>从数千个扩展中选择</a>。">
+<!-- LOCALIZATION NOTE (abouthome.rightsSnippet): text in <a/> will be linked to about:rights -->
+<!ENTITY abouthome.rightsSnippet "&brandFullName; 是非营利组织 Mozilla Foundation 开发的免费开源软件。<a>了解您的权利…</a>">
+
+<!ENTITY abouthome.bookmarksButton.label "书签">
+<!ENTITY abouthome.historyButton.label   "历史记录">
+<!-- LOCALIZATION NOTE (abouthome.preferencesButtonWin.label): The label for the
+     preferences/options item on about:home on Windows -->
+<!ENTITY abouthome.preferencesButtonWin.label  "选项">
+<!-- LOCALIZATION NOTE (abouthome.preferencesButtonUnix.label): The label for the
+     preferences/options item on about:home on Linux and OS X -->
+<!ENTITY abouthome.preferencesButtonUnix.label  "偏好设置">
+<!ENTITY abouthome.addonsButton.label    "扩展">
+<!ENTITY abouthome.downloadsButton.label "下载内容">
+<!ENTITY abouthome.syncButton.label      "&syncBrand.shortName.label;">
+
+<!-- LOCALIZATION NOTE (abouthome.aboutMozilla.label): The (invisible) label for
+     the mozilla wordmark in the top-right corner that links to Mozilla's main
+     about page. -->
+<!ENTITY abouthome.aboutMozilla.label    "关于 Mozilla">

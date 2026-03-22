@@ -378,7 +378,7 @@ pref("browser.link.open_newwindow.override.external", -1);
 // 0: no restrictions - divert everything
 // 1: don't divert window.open at all
 // 2: don't divert window.open with features
-pref("browser.link.open_newwindow.restriction", 2);
+pref("browser.link.open_newwindow.restriction", 0);
 
 // If true, this pref causes windows opened by window.open to be forced into new
 // tabs (rather than potentially opening separate windows, depending on
@@ -685,6 +685,7 @@ pref("findbar.modalHighlight", true);
 // Tracks when accessibility is loaded into the previous session.
 pref("accessibility.loadedInLastSession", false);
 
+#ifdef MOZ_ENABLE_NPAPI
 pref("plugins.click_to_play", true);
 pref("plugins.testmode", false);
 
@@ -700,6 +701,7 @@ pref("plugin.state.java", 1);
 
 // On ESR only, we re-enable all plugins instead of only loading Flash.
 pref("plugin.load_flash_only", false);
+#endif
 
 #ifdef XP_MACOSX
 pref("browser.preferences.animateFadeIn", true);
@@ -951,6 +953,7 @@ pref("browser.privatebrowsing.autostart", false);
 // bookmarking dialog
 pref("browser.bookmarks.editDialog.firstEditField", "namePicker");
 
+#ifdef MOZ_ENABLE_NPAPI
 pref("dom.ipc.plugins.flash.disable-protected-mode", false);
 
 // Feature-disable the protected-mode auto-flip
@@ -958,6 +961,7 @@ pref("browser.flash-protected-mode-flip.enable", false);
 
 // Whether we've already flipped protected mode automatically
 pref("browser.flash-protected-mode-flip.done", false);
+#endif
 
 pref("dom.ipc.shims.enabledWarnings", false);
 
@@ -1206,6 +1210,11 @@ pref("browser.uiCustomization.state", "");
 // On GTK, we now default to showing the menubar only when alt is pressed:
 #ifdef MOZ_WIDGET_GTK
 pref("ui.key.menuAccessKeyFocuses", true);
+#endif
+
+// On MacOS 10.6 and earlier, enable the window resize grip
+#ifdef XP_MACOSX
+pref("ui.mouse.resize_grip", true);
 #endif
 
 #ifdef MOZ_GMP

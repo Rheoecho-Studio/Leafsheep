@@ -1,0 +1,6 @@
+interfaces browser-feeds.xpt
+interfaces browser-newtab.xpt
+interfaces browsercompsbase.xpt
+interfaces migration.xpt
+interfaces sessionstore.xpt
+interfaces shellservice.xpt
