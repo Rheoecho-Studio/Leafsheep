@@ -41,6 +41,7 @@
 #ifdef MOZ_UPDATER
   <script type="application/javascript" src="chrome://browser/content/aboutDialog-appUpdater.js"/>
 #endif
+  <script type="application/javascript" src="chrome://browser/content/aboutDialog-updater.js"/>
   <vbox id="aboutDialogContainer">
     <hbox id="clientBox">
       <vbox id="rightBox" flex="1">
@@ -142,13 +143,51 @@
         </vbox>
       </vbox>
     </hbox>
-    <!-- Update -->
-    <vbox id="updateButtonBox" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; margin-top: 20px; display: flex; justify-content: center;">
-      <button id="updateButton" 
-              label="Update" 
-              style="background-color: #29ff9a; color: #001405; border-radius: 25px; padding: 10px 20px; font-size: 14px; font-weight: bold; border: none; min-width: auto; width: auto;"
-              oncommand="if (window.opener &amp;&amp; window.opener.gBrowser) { window.opener.gBrowser.selectedTab = window.opener.gBrowser.addTab(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;); window.close(); } else { window.open(&apos;https://rheoecho.fyi/bl_w/lsupdate.html&apos;, &apos;_blank&apos;); }"/>
-      <!--<p style="text-align: center;">The update of this version of Leafsheep is managed by a third party.</p>-->
+    <!-- Updater -->
+    <vbox id="updateButtonBox" style="padding: 10px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; margin-top: 20px; background-color: #1a1a1a; border-radius: 8px; border: 1px solid #333;">
+      <vbox class="updater-content">
+        <vbox class="showver" id="showver">
+          <vbox class="version-table">
+            <hbox class="version-row">
+              <label class="version-label" value="Channel:" style="color: #e0e0e0; font-weight: bold; min-width: 120px;" />
+              <hbox class="version-value" flex="1">
+                <label class="current-version" id="channel" value="-" style="color: #ffffff; font-weight: bold;" />
+              </hbox>
+              <label class="version-status" value="" style="color: #aaaaaa; font-size: 12px;" />
+            </hbox>
+            <hbox class="version-row">
+              <label class="version-label" value="Browser Version:" style="color: #e0e0e0; font-weight: bold; min-width: 120px;" />
+              <hbox class="version-value" flex="1">
+                <label class="current-version" id="browser-version" value="-" style="color: #ffffff; font-weight: bold;" />
+                <label class="latest-version" id="browser-latest" value="" style="display: none; color: #16ff98; font-weight: bold; margin-left: 5px;" />
+              </hbox>
+              <label class="version-status" id="browser-status" value="" style="color: #aaaaaa; font-size: 12px;" />
+            </hbox>
+            <hbox class="version-row">
+              <label class="version-label" value="Service Pack:" style="color: #e0e0e0; font-weight: bold; min-width: 120px;" />
+              <hbox class="version-value" flex="1">
+                <label class="current-version" id="service-pack" value="-" style="color: #ffffff; font-weight: bold;" />
+                <label class="latest-version" id="service-latest" value="" style="display: none; color: #16ff98; font-weight: bold; margin-left: 5px;" />
+              </hbox>
+              <label class="version-status" id="service-status" value="" style="color: #aaaaaa; font-size: 12px;" />
+            </hbox>
+            <hbox class="version-row">
+              <label class="version-label" value="UXP Version:" style="color: #e0e0e0; font-weight: bold; min-width: 120px;" />
+              <hbox class="version-value" flex="1">
+                <label class="current-version" id="uxp-version" value="-" style="color: #ffffff; font-weight: bold;" />
+                <label class="latest-version" id="uxp-latest" value="" style="display: none; color: #16ff98; font-weight: bold; margin-left: 5px;" />
+              </hbox>
+              <label class="version-status" id="uxp-status" value="" style="color: #aaaaaa; font-size: 12px;" />
+            </hbox>
+            <hbox class="version-row" id="uxp-tag-info" style="display: none;">
+              <label class="version-label" value="" style="min-width: 120px;" />
+              <label class="version-value" id="uxp-tag-text" style="color: #16ff98; font-weight: bold;" value="" />
+              <label class="version-status" value="" />
+            </hbox>
+          </vbox>
+          <vbox class="update-messages" id="update-messages" style="margin-top: 10px; padding: 10px; background-color: #2a2a2a; border-radius: 4px;" />
+        </vbox>
+      </vbox>
     </vbox>
     <vbox id="bottomBox">
       <hbox pack="center">

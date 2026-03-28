@@ -92,4 +92,9 @@ function init(aEvent)
   window.sizeToContent();
   window.moveTo((screen.availWidth / 2) - (window.outerWidth / 2), screen.availHeight / 5);
 #endif
+
+  // Initialize the updater
+  if (typeof Updater !== 'undefined') {
+    Updater.init();
+  }
 }

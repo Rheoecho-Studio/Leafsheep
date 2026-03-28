@@ -5,6 +5,5 @@
 
 DIRS += [
     'pdfjs',
-    'zh-CN',
 ]
 

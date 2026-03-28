@@ -13,10 +13,6 @@
 #define PM_VERSION 33.6.1
 #define PM_SLICE PaleMoon/@PM_VERSION@
 
-//LSVAPI
-#define LSVAPI_LS
-#define LSVAPI_SP
-#define LSVAPI_UXP
 
 // %OS_SLICE% macro is resolved at runtime, see MoonchildProductions/UXP/issues/1473
 
@@ -84,10 +80,3 @@ pref("@GUAO_PREF@.slack.com","Mozilla/5.0 (%OS_SLICE% rv:120.0) @GK_SLICE@ Firef
 
 // Domains that require a Pale Moon user agent override
 //pref("@GUAO_PREF@.challenges.cloudflare.com","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @UXP_VERSION_SLICE@ @FX_SLICE@ @PM_SLICE@");
-
-// ============================================================================
-
-//Leafsheep Rolling Update (LSVAPI)
-pref("@GUAO_PREF@.rheoecho.fyi","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");
-pref("@GUAO_PREF@.ie.icoa.cn","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");
-pref("@GUAO_PREF@.codeberg.org","Mozilla/5.0 (%OS_SLICE% rv:@GK_VERSION@) @GK_SLICE@ @FX_SLICE@ (Leafsheep) @UXP_VERSION@ @UXP_VERSION_SLICE@ @APP_SLICE@ (LSVAPI: @LSVAPI_LS@ , @LSVAPI_SP@ , @LSVAPI_UXP@ )");

@@ -18,10 +18,10 @@ fi
 
 # 从LSVERSION文件读取版本信息
 # LSVERSION格式：
-# 第一行：频道 (ROLLING)
-# 第二行：版本号 (1.1)
-# 第三行：服务包 (SP0)
-# 第四行：UXP commit ID (72d1f9b)
+# 第一行：频道
+# 第二行：版本号 
+# 第三行：服务包 
+# 第四行：UXP commit ID 
 
 LSVERSION_FILE="${_topsrcdir}/LSVERSION"
 if test -f "$LSVERSION_FILE"; then
@@ -39,7 +39,7 @@ if test -f "$LSVERSION_FILE"; then
     # 提取SP数字（去掉SP前缀）
     SP_NUMBER=$(echo "$SERVICE_PACK" | sed 's/SP//')
     
-    # MOZ_APP_VERSION: 格式为 主版本.次版本.SP数 (如 1.1.0)
+    # MOZ_APP_VERSION
     MOZ_APP_VERSION="$VERSION.$SP_NUMBER"
     
     # MOZ_APP_VERSION_DISPLAY: 格式为 版本号 SP数 (kernel-commit_id)
