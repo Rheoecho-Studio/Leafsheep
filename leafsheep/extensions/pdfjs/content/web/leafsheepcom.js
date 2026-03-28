@@ -79,7 +79,7 @@
     return value;
   }
 
-  class LeafsheepExternalServices extends BaseExternalServices {
+  class BasiliskExternalServices extends BaseExternalServices {
     static updateFindControlState(data) {
       FirefoxCom.request("updateFindControlState", data);
     }
@@ -181,7 +181,7 @@
     }
   }
 
-  window.PDFViewerApplication.externalServices = LeafsheepExternalServices;
+  window.PDFViewerApplication.externalServices = BasiliskExternalServices;
 
   window.PDFViewerApplication.initPassiveLoading = function () {
     var self = this;

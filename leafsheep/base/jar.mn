@@ -14,6 +14,7 @@ browser.jar:
         content/browser/aboutDialog-appUpdater.js     (content/aboutDialog-appUpdater.js)
 *       content/browser/aboutDialog.xul               (content/aboutDialog.xul)
 *       content/browser/aboutDialog.js                (content/aboutDialog.js)
+        content/browser/aboutDialog-updater.js        (content/aboutDialog-updater.js)
         content/browser/aboutDialog.css               (content/aboutDialog.css)
 
 #ifdef MOZ_SERVICES_SYNC
