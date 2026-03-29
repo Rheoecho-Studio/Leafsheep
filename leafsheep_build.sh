@@ -190,7 +190,7 @@ update_version_info() {
     mark_step_done 3
 }
 
-select_system() {
+select_configuration() {
     echo "Please select your current system:"
     echo "1) Windows"
     echo "2) Linux/FreeBSD/illumos"
@@ -212,25 +212,24 @@ select_system() {
             touch .mozconfig
             echo "Please manually edit .mozconfig file to configure build options"
             echo
+
+            mark_step_done 3
             mark_step_done 4
             mark_step_done 5
-            mark_step_done 6
             return 0
             ;;
     esac
 
     echo "Selected system: $SYSTEM_DIR"
-    mark_step_done 4
-}
 
-select_architecture() {
     if [ ! -d "mozconfigs/$SYSTEM_DIR" ]; then
         echo "Error: mozconfigs/$SYSTEM_DIR directory does not exist!"
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
+        mark_step_done 3
+        mark_step_done 4
         mark_step_done 5
-        mark_step_done 6
         return 0
     fi
 
@@ -242,8 +241,9 @@ select_architecture() {
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
+        mark_step_done 3
+        mark_step_done 4
         mark_step_done 5
-        mark_step_done 6
         return 0
     fi
 
@@ -256,20 +256,14 @@ select_architecture() {
     if [[ "$ARCH_OPTION" =~ ^[0-9]+$ ]] && [ "$ARCH_OPTION" -ge 1 ] && [ "$ARCH_OPTION" -le ${#ARCH_DIRS[@]} ]; then
         ARCH_DIR="${ARCH_DIRS[$((ARCH_OPTION-1))]}"
         echo "Selected architecture: $ARCH_DIR"
-        mark_step_done 5
     else
         echo "Invalid architecture selection, creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
+        mark_step_done 3
+        mark_step_done 4
         mark_step_done 5
-        mark_step_done 6
         return 0
-    fi
-}
-
-select_mozconfig() {
-    if [ ! -f "$STEP_DONE_FILE.5" ]; then
-        return 1
     fi
 
     echo "Available .mozconfig files for $SYSTEM_DIR/$ARCH_DIR:"
@@ -280,7 +274,9 @@ select_mozconfig() {
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 6
+        mark_step_done 3
+        mark_step_done 4
+        mark_step_done 5
         return 0
     fi
 
@@ -300,13 +296,15 @@ select_mozconfig() {
         cp "$SELECTED_FILE" .mozconfig
         echo "Selected configuration: $(basename "$SELECTED_FILE")"
         echo "Configuration file copied to .mozconfig"
-        mark_step_done 6
     else
         echo "Invalid selection, creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 6
     fi
+
+    mark_step_done 3
+    mark_step_done 4
+    mark_step_done 5
 }
 
 execute_mach_action() {
@@ -371,9 +369,7 @@ show_menu() {
     local steps=(
         "Sync UXP version"
         "Update version info"
-        "Select system type"
-        "Select architecture"
-        "Select mozconfig"
+        "Select configuration"
         "Execute mach action"
     )
 
@@ -394,7 +390,7 @@ show_menu() {
 }
 
 run_all_remaining() {
-    for i in {1..6}; do
+    for i in {1..4}; do
         if ! is_step_done $i; then
             run_step $i
             if [ $? -ne 0 ]; then
@@ -420,15 +416,9 @@ run_step() {
             update_version_info
             ;;
         3)
-            select_system
+            select_configuration
             ;;
         4)
-            select_architecture
-            ;;
-        5)
-            select_mozconfig
-            ;;
-        6)
             execute_mach_action
             ;;
         *)
@@ -441,9 +431,7 @@ run_step() {
 declare -a steps=(
     "Sync UXP version"
     "Update version info"
-    "Select system type"
-    "Select architecture"
-    "Select mozconfig"
+    "Select configuration"
     "Execute mach action"
 )
 
@@ -473,7 +461,7 @@ main() {
             S|s)
                 run_all_remaining
                 ;;
-            1|2|3|4|5|6)
+            1|2|3|4)
                 run_step $choice
                 ;;
             R|r)
