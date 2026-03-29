@@ -193,19 +193,27 @@ update_version_info() {
 select_configuration() {
     echo "Please select your current system:"
     echo "1) Windows"
-    echo "2) Linux/FreeBSD/illumos"
-    echo "3) macOS"
+    echo "2) Linux"
+    echo "3) MacOS"
+    echo "4) Illumos"
+    echo "5) BSD Series"
     read -p "Enter option (1/2/3): " SYSTEM_TYPE
 
     case $SYSTEM_TYPE in
         1|Windows|windows)
             SYSTEM_DIR="windows"
             ;;
-        2|Linux|linux|FreeBSD|freebsd|illumos|Illumos)
+        2|Linux|linux)
             SYSTEM_DIR="linux"
             ;;
         3|macos|MacOS|mac)
             SYSTEM_DIR="macos"
+            ;;
+        4|illumos|Illumos)
+            SYSTEM_DIR="illumos"
+            ;;
+        5|BSD|bsd)
+            SYSTEM_DIR="bsd"
             ;;
         *)
             echo "Invalid option, creating blank .mozconfig file..."
