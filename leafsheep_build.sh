@@ -3,20 +3,6 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-STEP_DONE_FILE="$SCRIPT_DIR/.build_steps_done"
-
-mark_step_done() {
-    local step=$1
-    touch "$STEP_DONE_FILE.$step"
-}
-
-is_step_done() {
-    [ -f "$STEP_DONE_FILE.$1" ]
-}
-
-clear_step_done() {
-    rm -f "$STEP_DONE_FILE."*
-}
 
 check_lsversion() {
     if [ ! -f LSVERSION ]; then
@@ -34,7 +20,6 @@ check_lsversion() {
     echo "Service Pack: $SERVICE_PACK"
     echo
 
-    mark_step_done 1
 }
 
 sync_uxp() {
@@ -100,7 +85,6 @@ sync_uxp() {
     echo "$COMMIT_ID" > "$SCRIPT_DIR/.uxp_commit_id"
     echo "$COMMIT_ID" > platform/.uxp_commit_id
 
-    mark_step_done 2
 }
 
 update_version_info() {
@@ -186,8 +170,6 @@ update_version_info() {
     else
         echo "Warning: aboutDialog-updater.js file not found!"
     fi
-
-    mark_step_done 3
 }
 
 select_configuration() {
@@ -221,9 +203,6 @@ select_configuration() {
             echo "Please manually edit .mozconfig file to configure build options"
             echo
 
-            mark_step_done 3
-            mark_step_done 4
-            mark_step_done 5
             return 0
             ;;
     esac
@@ -235,9 +214,6 @@ select_configuration() {
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 3
-        mark_step_done 4
-        mark_step_done 5
         return 0
     fi
 
@@ -249,9 +225,6 @@ select_configuration() {
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 3
-        mark_step_done 4
-        mark_step_done 5
         return 0
     fi
 
@@ -268,9 +241,6 @@ select_configuration() {
         echo "Invalid architecture selection, creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 3
-        mark_step_done 4
-        mark_step_done 5
         return 0
     fi
 
@@ -282,9 +252,6 @@ select_configuration() {
         echo "Creating blank .mozconfig file..."
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
-        mark_step_done 3
-        mark_step_done 4
-        mark_step_done 5
         return 0
     fi
 
@@ -309,10 +276,6 @@ select_configuration() {
         touch .mozconfig
         echo "Please manually edit .mozconfig file to configure build options"
     fi
-
-    mark_step_done 3
-    mark_step_done 4
-    mark_step_done 5
 }
 
 execute_mach_action() {
@@ -383,29 +346,12 @@ show_menu() {
 
     for i in "${!steps[@]}"; do
         local num=$((i+1))
-        local status="[ ]"
-        if is_step_done $num; then
-            status="[✓]"
-        fi
-        echo "  $status $num) ${steps[$i]}"
+        echo "  $num) ${steps[$i]}"
     done
 
     echo ""
-    echo "  S) Run all remaining steps"
-    echo "  R) Reset all steps"
     echo "  Q) Quit"
     echo ""
-}
-
-run_all_remaining() {
-    for i in {1..4}; do
-        if ! is_step_done $i; then
-            run_step $i
-            if [ $? -ne 0 ]; then
-                return 1
-            fi
-        fi
-    done
 }
 
 run_step() {
@@ -451,30 +397,13 @@ main() {
         exit 1
     fi
 
-    if [ -f platform/.git ]; then
-        cd platform
-        COMMIT_ID=$(git rev-parse --short HEAD 2>/dev/null || echo "unknown")
-        cd "$SCRIPT_DIR"
-        if [ -n "$COMMIT_ID" ] && [ "$COMMIT_ID" != "unknown" ]; then
-            mark_step_done 1
-            mark_step_done 2
-        fi
-    fi
-
     while true; do
         show_menu
         read -p "Select option: " choice
 
         case $choice in
-            S|s)
-                run_all_remaining
-                ;;
             1|2|3|4)
                 run_step $choice
-                ;;
-            R|r)
-                clear_step_done
-                echo "All steps reset."
                 ;;
             Q|q)
                 echo "Goodbye!"

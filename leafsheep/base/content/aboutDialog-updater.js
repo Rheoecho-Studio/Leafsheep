@@ -58,10 +58,24 @@ var Updater = {
 
   fetchLatestVersionInfo: async function() {
     try {
-      let url = "https://rheoecho.fyi/bl_w/version.json";
-      let response = await fetch(url);
-      if (response.ok) {
-        return await response.json();
+      // First fetch the lsversion.json for channel-specific version info
+      let lsUrl = "https://rheoecho.fyi/bl_w/lsversion.json";
+      let lsResponse = await fetch(lsUrl);
+      if (lsResponse.ok) {
+        let lsData = await lsResponse.json();
+        
+        // Then fetch the version.json for UXP version info
+        let versionUrl = "https://rheoecho.fyi/bl_w/version.json";
+        let versionResponse = await fetch(versionUrl);
+        let versionData = {};
+        if (versionResponse.ok) {
+          versionData = await versionResponse.json();
+        }
+        
+        return {
+          lsversion: lsData,
+          version: versionData
+        };
       }
     } catch (e) {
       console.error("Failed to fetch latest version info:", e);
@@ -69,12 +83,33 @@ var Updater = {
     
     // Fallback if fetch fails
     return {
-      masterid: "unknown",
-      tagsid: "unknown",
-      releaseid: "unknown",
-      tags: "unknown",
-      release: "unknown"
+      lsversion: {},
+      version: {
+        masterid: "unknown",
+        tagsid: "unknown", 
+        releaseid: "unknown",
+        tags: "unknown",
+        release: "unknown"
+      }
     };
+  },
+
+  // Detect current operating system
+  detectSystem: function() {
+    let userAgent = navigator.userAgent.toLowerCase();
+    if (userAgent.includes("windows")) {
+      return "windows";
+    } else if (userAgent.includes("linux")) {
+      return "linux";
+    } else if (userAgent.includes("mac")) {
+      return "macos";
+    } else if (userAgent.includes("illumos")) {
+      return "illumos";
+    } else if (userAgent.includes("bsd")) {
+      return "bsd";
+    } else {
+      return "default";
+    }
   },
 
   performVersionComparison: function(local, latest) {
@@ -86,57 +121,98 @@ var Updater = {
     // Reset styles
     this.resetVersionStyles();
     
+    // Check if we have valid data
+    if (!latest.lsversion || Object.keys(latest.lsversion).length === 0) {
+      this.displayError("Unable to load version data for comparison");
+      return;
+    }
+    
+    // Get the channel from local version
+    let channel = local.channel;
+    if (!channel || channel === "") {
+      this.displayError("Unable to determine current channel");
+      return;
+    }
+    
+    // Check if channel exists in lsversion.json
+    let channelData = latest.lsversion[channel];
+    if (!channelData) {
+      this.displayError(`Channel ${channel} not found in update data`);
+      return;
+    }
+    
     // Priority 1: Browser Version comparison
-    if (local.browser_version !== "1.1") {
+    if (local.browser_version !== channelData.browser_version) {
       this.highlightUpdate("browser-version", "browser-latest", true);
+      let latestEl = document.getElementById("browser-latest");
+      if (latestEl) {
+        latestEl.value = channelData.browser_version;
+      }
       this.addImportantUpdate(messagesDiv, 
-        "You have important updates that need to be updated!",
+        `You have important updates that need to be updated! (Current: ${local.browser_version}, Latest: ${channelData.browser_version})`,
         "https://github.com/Rheoecho-Studio/Leafsheep/releases");
       return;
     }
     
     // Priority 2: Service Pack comparison
-    if (local.service_pack !== "SP0") {
+    if (local.service_pack !== channelData.service_pack_version) {
       this.highlightUpdate("service-pack", "service-latest", true);
+      let latestEl = document.getElementById("service-latest");
+      if (latestEl) {
+        latestEl.value = channelData.service_pack_version;
+      }
       this.addOptionalUpdate(messagesDiv,
-        "You have the option to update, and you can choose the update according to your needs.",
+        `You have the option to update, and you can choose the update according to your needs. (Current: ${local.service_pack}, Latest: ${channelData.service_pack_version})`,
         "https://github.com/Rheoecho-Studio/Leafsheep/tags");
       return;
     }
     
     // Priority 3: UXP Version comparison
-    if (latest.masterid === "unknown") {
-      this.displayError("Unable to load version data for comparison");
-      return;
+    let currentSystem = this.detectSystem();
+    let uxpVersion = channelData.uxp_version;
+    
+    // Check if system-specific UXP version exists
+    if (uxpVersion && uxpVersion[currentSystem]) {
+      uxpVersion = uxpVersion[currentSystem];
+    } else if (uxpVersion && uxpVersion.latest_uxp_version) {
+      // Fallback to default UXP version
+      uxpVersion = uxpVersion.latest_uxp_version;
+    } else {
+      // Fallback to version.json masterid
+      uxpVersion = latest.version.masterid;
     }
     
-    if (local.uxp_commit === latest.masterid) {
+    if (local.uxp_commit === uxpVersion) {
       this.markAsLatest("uxp-version");
       this.addLatestMessage(messagesDiv, "You are latest!");
-    } else if (local.uxp_commit === latest.tagsid || local.uxp_commit === latest.releaseid) {
+    } else if (latest.version && (local.uxp_commit === latest.version.tagsid || local.uxp_commit === latest.version.releaseid)) {
       this.highlightUpdate("uxp-version", "uxp-latest", false);
       let versionLabel = "";
       let versionType = "";
       
-      if (latest.tagsid === latest.releaseid && latest.tags === latest.release) {
-        versionLabel = latest.release;
+      if (latest.version.tagsid === latest.version.releaseid && latest.version.tags === latest.version.release) {
+        versionLabel = latest.version.release;
         versionType = "Release";
-      } else if (local.uxp_commit === latest.tagsid) {
-        versionLabel = latest.tags;
+      } else if (local.uxp_commit === latest.version.tagsid) {
+        versionLabel = latest.version.tags;
         versionType = "Tags";
       } else {
-        versionLabel = latest.release;
+        versionLabel = latest.version.release;
         versionType = "Release";
       }
       
       this.addUXPVersionInfo(versionType, versionLabel);
       this.addOptionalUpdate(messagesDiv,
-        "You have the option to update, and you can choose the update according to your needs.",
+        `You have the option to update, and you can choose the update according to your needs. (Current: ${local.uxp_commit}, Latest: ${uxpVersion})`,
         "https://github.com/Rheoecho-Studio/Leafsheep/tags");
     } else {
       this.highlightUpdate("uxp-version", "uxp-latest", false);
+      let latestEl = document.getElementById("uxp-latest");
+      if (latestEl) {
+        latestEl.value = uxpVersion;
+      }
       this.addOptionalUpdate(messagesDiv,
-        "You have the option to update, and you can choose the update according to your needs.",
+        `You have the option to update, and you can choose the update according to your needs. (Current: ${local.uxp_commit}, Latest: ${uxpVersion})`,
         "https://github.com/Rheoecho-Studio/Leafsheep/tags");
     }
   },
