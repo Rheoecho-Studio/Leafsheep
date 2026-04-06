@@ -61,7 +61,7 @@ In this case you need to go into "individual components" of the Visual Studio in
 ### Linux
 
 - **GNU Compiler Collection (see below)**
-- **Python 2.7.x**
+- **Python 2.7.18 & 3.14.x**
 - **Yasm 1.2.0 or higher**
 - **XZ**
 - **Plenty of free disk space**
@@ -73,7 +73,7 @@ In this case you need to go into "individual components" of the Visual Studio in
 ### illumos
 
 - **GCC version 10.x**
-- **Python 2.7.x**
+- **Python 2.7.18 & 3.14.x**
 - **Exactly Autoconf 2.13**
 - **Yasm 1.2.0 or higher**
 - **GTK 3.x**
