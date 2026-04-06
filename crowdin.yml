@@ -1,4 +1,0 @@
-files:
-  - source: /leafsheep/locales/en-US/chrome/browser
-    translation: /leafsheep/locales/%locale%/chrome/browser
-    multilingual: 1
