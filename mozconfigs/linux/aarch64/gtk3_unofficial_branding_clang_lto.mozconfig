@@ -1,10 +1,7 @@
-# Clear this if not a 64bit build
-_BUILD_64=1
-
 # Set GTK Version to 2 or 3
 _GTK_VERSION=3
 
-# Set Leafsheep version to date timestamp
+# Set Basilisk version to date timestamp
 export BASILISK_VERSION=1
 
 # Use clang/llvm toolchain
@@ -14,6 +11,25 @@ export AR="/usr/bin/llvm-ar"
 export NM="/usr/bin/llvm-nm"
 export RANLIB="/usr/bin/llvm-ranlib"
 export LD=ld.lld
+
+# Force LLVM for HOST tools as well
+export HOST_CC=/usr/bin/clang
+export HOST_CXX=/usr/bin/clang++
+export HOST_AR=/usr/bin/llvm-ar
+export HOST_RANLIB=/usr/bin/llvm-ranlib
+export HOST_NM=/usr/bin/llvm-nm
+export HOST_LD=ld.lld
+
+# Ensure static archives always get a symbol table (__.SYMDEF).
+# Older Mozilla/UXP build logic assumes ar creates this implicitly,
+# but with ThinLTO + LLVM bitcode that is no longer guaranteed.
+# Without the 's' flag, ld/lld will fail with:
+#   "archive has no index; run ranlib to add one"
+# This is especially critical for HOST tools (mbsdiff, mar, etc.).
+export ARFLAGS=crs
+export HOST_ARFLAGS=crs
+export ARFLAGS=crs
+export HOST_ARFLAGS=crs
 
 # ThinLTO with Clang/LLVM. -Wl,--undefined-version is needed due to differences between GNU ld and lld
 export LDFLAGS="-flto=thin -fuse-ld=lld -Wl,--undefined-version"
@@ -42,11 +58,6 @@ ac_add_options --disable-official-branding
 
 export MOZILLA_OFFICIAL=1
 
-# Processor architecture specific build options
-if [ -n "$_BUILD_64" ]; then
-  ac_add_options --x-libraries=/usr/lib64
-else
-  ac_add_options --x-libraries=/usr/lib
-fi
+ac_add_options --x-libraries=/usr/lib64
 
 export MOZ_PKG_SPECIAL=gtk$_GTK_VERSION

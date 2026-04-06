@@ -232,6 +232,18 @@ InternalUserscriptsService.prototype = {
     } catch (e) {
       // ignore
     }
+     	
+	  try {
+	    Services.scriptloader.loadSubScript(
+        "chrome://internaluserscripts/content/bundled-scripts/textdecoderstream-polyfill.user.js",
+        contentWin,
+      );
+      if (contentWin.__internalUserscriptsTextDecoderStreamPolyfill) {
+        logPolyfill("TextDecoderStream", "bundled");
+      }
+    } catch (e) {
+      // ignore
+    }
 
     try {
       Services.scriptloader.loadSubScript(
