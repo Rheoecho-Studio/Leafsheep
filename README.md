@@ -26,7 +26,7 @@
 
 ## Prerequisites:
 ### Windows
-**At least Windows 10 64-bit (32-bit build environments or Windows versions < 10 are not supported)**
+**At least Windows 11 64-bit (32-bit build environments is not supported)**
 
 **Microsoft Visual Studio 2026 (Community Edition (free) or Pro/Paid version -- Express won't work).**
 
@@ -45,7 +45,7 @@ This is an all-in-one build package with software licensed under various Open So
 
 **Important note: Do not install the build tools in a path with spaces in the name! Some of the build tools don't work properly if the installation path has spaces.**
 
-**At least 6 GB RAM (8 GB or more strongly recommended, especially if building with parallel tasks)**
+**At least 8 GB RAM (16 GB or more strongly recommended, especially if building with parallel tasks)**
 
 **Plenty of freer/runtime issue leading to browser instability, that you need to work around by using an older version of the compiler and runtimes.**
 
@@ -87,6 +87,10 @@ In this case you need to go into "individual components" of the Visual Studio in
 - **At least 6 GB RAM free depending on number of processor cores** (limit using the mk_add_options MOZ_MAKE_FLAGS="-jN" option)
 - **Various distribution specific development packages**
 - **General system requirements for running the application itself**
+
+### BSD
+Same as Linux.
+
 
 ## Build
 **Run `leafsheep_build.sh`**
